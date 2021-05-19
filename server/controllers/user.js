@@ -24,7 +24,7 @@ export const getUser = async (req, res) => {
     const user = await User.findById(_id);
 
     if (!user) {
-      res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
     }
 
     return res.status(httpStatus.OK).json(user);
@@ -41,7 +41,7 @@ export const createUser = async (req, res) => {
 
     return res.status(httpStatus.CREATED).json({ user, message: USER.CREATED });
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json(error);
+    return res.status(httpStatus.BAD_REQUEST).json(error);
   }
 };
 
@@ -61,7 +61,9 @@ export const deleteUser = async (req, res) => {
 
     await User.findByIdAndDelete(id, (err, doc) => {
       if (err || !doc) {
-        res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: USER.NOT_FOUND });
       }
     });
 

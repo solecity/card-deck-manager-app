@@ -16,7 +16,9 @@ export const login = async (req, res) => {
     const user = await User.findOne({ username: username }).select("+password");
 
     if (!user) {
-      res.status(httpStatus.UNAUTHORIZED).json({ message: LOGIN.UNAUTHORIZED });
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: LOGIN.UNAUTHORIZED });
     }
 
     bcrypt.compare(password, user.password, (err, result) => {
@@ -27,7 +29,7 @@ export const login = async (req, res) => {
 
         return res.status(httpStatus.OK).json({ token, auth: true });
       } else {
-        res
+        return res
           .status(httpStatus.UNAUTHORIZED)
           .json({ message: LOGIN.UNAUTHORIZED });
       }
