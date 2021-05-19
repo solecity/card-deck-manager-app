@@ -52,7 +52,14 @@ export const getCard = async (req, res) => {
 
 export const createCard = async (req, res) => {
   try {
-    const card = new Card(req.body);
+    const loggedUser = req.user;
+    const data = req.body;
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      data.user = loggedUser._id;
+    }
+
+    const card = new Card(data);
 
     await card.save();
 
