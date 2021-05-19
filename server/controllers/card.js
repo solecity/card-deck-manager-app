@@ -29,7 +29,7 @@ export const getCard = async (req, res) => {
 
     return res.status(httpStatus.OK).json(card);
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -41,22 +41,24 @@ export const createCard = async (req, res) => {
 
     return res.status(httpStatus.CREATED).json({ card, message: CARD.CREATED });
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json(error);
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
 export const deleteCard = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id: _id } = req.params;
 
-    await Card.findByIdAndDelete(id, (err, doc) => {
-      if (err || !doc) {
-        res.status(httpStatus.NOT_FOUND).json({ message: CARD.NOT_FOUND });
-      }
-    });
+    const card = await Card.findById(_id);
+
+    if (!card) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: CARD.NOT_FOUND });
+    }
+
+    await card.remove();
 
     return res.status(httpStatus.OK).json({ message: CARD.DELETED });
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };

@@ -13,7 +13,7 @@ export const getUsers = async (req, res) => {
 
     return res.status(httpStatus.OK).json(users);
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -29,7 +29,7 @@ export const getUser = async (req, res) => {
 
     return res.status(httpStatus.OK).json(user);
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -46,7 +46,7 @@ export const createUser = async (req, res) => {
       .status(httpStatus.CREATED)
       .json({ user: newUser, message: USER.CREATED });
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json(error);
+    return res.status(httpStatus.BAD_REQUEST).json(error);
   }
 };
 
@@ -56,22 +56,27 @@ export const updateUser = async (req, res) => {
 
     // update or err
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
 export const deleteUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id: _id } = req.params;
 
-    await User.findByIdAndDelete(id, (err, doc) => {
-      if (err || !doc) {
-        res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
-      }
-    });
+    const user = await User.findById(_id);
+
+    if (!user) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    console.log("🦄 ");
+    console.log(req.user);
+
+    await user.remove();
 
     return res.status(httpStatus.OK).json({ message: USER.DELETED });
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
