@@ -5,11 +5,19 @@ import httpStatus from "http-status-codes";
 import Collection from "../models/collection.js";
 
 // constants
-import { COLLECTION } from "../constants/messages.js";
+import { USER_TYPES } from "../constants/general.js";
+import { GENERAL, COLLECTION } from "../constants/messages.js";
 
 export const getCollections = async (req, res) => {
   try {
-    const collections = await Collection.find();
+    const loggedUser = req.user;
+    let collections = [];
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      collections = await Collection.find({ user: loggedUser._id });
+    } else {
+      collections = await Collection.find();
+    }
 
     return res.status(httpStatus.OK).json(collections);
   } catch (error) {
@@ -20,6 +28,7 @@ export const getCollections = async (req, res) => {
 export const getCollection = async (req, res) => {
   try {
     const { id: _id } = req.params;
+    const loggedUser = req.user;
 
     const collection = await Collection.findById(_id);
 
@@ -27,6 +36,14 @@ export const getCollection = async (req, res) => {
       return res
         .status(httpStatus.NOT_FOUND)
         .json({ message: COLLECTION.NOT_FOUND });
+    }
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      if (collection.user !== loggedUser._id) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
     }
 
     return res.status(httpStatus.OK).json(collection);
@@ -37,7 +54,14 @@ export const getCollection = async (req, res) => {
 
 export const createCollection = async (req, res) => {
   try {
-    const collection = new Collection(req.body);
+    const loggedUser = req.user;
+    const data = req.body;
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      data.user = loggedUser._id;
+    }
+
+    const collection = new Collection(data);
 
     await collection.save();
 
@@ -52,6 +76,7 @@ export const createCollection = async (req, res) => {
 export const deleteCollection = async (req, res) => {
   try {
     const { id: _id } = req.params;
+    const loggedUser = req.user;
 
     const collection = await Collection.findById(_id);
 
@@ -59,6 +84,14 @@ export const deleteCollection = async (req, res) => {
       return res
         .status(httpStatus.NOT_FOUND)
         .json({ message: COLLECTION.NOT_FOUND });
+    }
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      if (collection.user !== loggedUser._id) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
     }
 
     await collection.remove();

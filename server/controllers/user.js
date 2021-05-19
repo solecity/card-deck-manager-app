@@ -5,8 +5,8 @@ import httpStatus from "http-status-codes";
 import User from "../models/user.js";
 
 // constants
-import { GENERAL, USER } from "../constants/messages.js";
 import { USER_TYPES } from "../constants/general.js";
+import { GENERAL, USER } from "../constants/messages.js";
 
 export const getUsers = async (req, res) => {
   try {

@@ -5,11 +5,19 @@ import httpStatus from "http-status-codes";
 import Card from "../models/card.js";
 
 // constants
-import { CARD } from "../constants/messages.js";
+import { USER_TYPES } from "../constants/general.js";
+import { GENERAL, CARD } from "../constants/messages.js";
 
 export const getCards = async (req, res) => {
   try {
-    const cards = await Card.find();
+    const loggedUser = req.user;
+    let cards = [];
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      cards = await Card.find({ user: loggedUser._id });
+    } else {
+      cards = await Card.find();
+    }
 
     return res.status(httpStatus.OK).json(cards);
   } catch (error) {
@@ -20,11 +28,20 @@ export const getCards = async (req, res) => {
 export const getCard = async (req, res) => {
   try {
     const { id: _id } = req.params;
+    const loggedUser = req.user;
 
     const card = await Card.findById(_id);
 
     if (!card) {
       return res.status(httpStatus.NOT_FOUND).json({ message: CARD.NOT_FOUND });
+    }
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      if (card.user !== loggedUser._id) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
     }
 
     return res.status(httpStatus.OK).json(card);
@@ -48,11 +65,20 @@ export const createCard = async (req, res) => {
 export const deleteCard = async (req, res) => {
   try {
     const { id: _id } = req.params;
+    const loggedUser = req.user;
 
     const card = await Card.findById(_id);
 
     if (!card) {
       return res.status(httpStatus.NOT_FOUND).json({ message: CARD.NOT_FOUND });
+    }
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      if (card.user !== loggedUser._id) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
     }
 
     await card.remove();

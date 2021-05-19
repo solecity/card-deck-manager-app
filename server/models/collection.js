@@ -8,11 +8,7 @@ const collectionchema = new Schema({
     type: String,
     required: true
   },
-  cards: [
-    {
-      type: Schema.Types.ObjectId
-    }
-  ],
+  cards: [Schema.Types.ObjectId],
   user: {
     type: Schema.Types.ObjectId,
     required: true
