@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const cardSchema = new Schema({
+const collectionchema = new Schema({
   name: {
     type: String,
     required: true
@@ -19,6 +19,6 @@ const cardSchema = new Schema({
   }
 });
 
-const Card = mongoose.model("Card", cardSchema);
+const Collection = mongoose.model("Collection", collectionchema);
 
-module.exports = Card;
+export default Collection;

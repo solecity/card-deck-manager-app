@@ -20,6 +20,8 @@ app.use(cors());
 
 app.use("/login", routes.auth);
 app.use("/users", routes.user);
+app.use("/cards", routes.card);
+app.use("/collections", routes.collection);
 
 const PORT = process.env.PORT || 5000;
 
