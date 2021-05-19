@@ -9,7 +9,8 @@ export const LOGIN = {
 export const USER = {
   CREATED: "User created successfully",
   DELETED: "User deleted successfully",
-  UPDATED: "User updated successfully"
+  UPDATED: "User updated successfully",
+  NOT_FOUND: "User not found"
 };
 
 export const COLLECTION = {
