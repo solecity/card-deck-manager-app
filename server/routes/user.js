@@ -11,17 +11,18 @@ import {
 } from "../controllers/user.js";
 
 // middleware
+import { checkAuth } from "../middleware/checkAuth.js";
 import { validateId } from "../middleware/validateId.js";
 
 const router = express.Router();
 
-router.get("/", getUsers);
-router.get("/:id", validateId, getUser);
+router.get("/", checkAuth, getUsers);
+router.get("/:id", checkAuth, validateId, getUser);
 
 router.post("/", createUser);
 
-router.patch("/:id", validateId, updateUser);
+router.patch("/:id", checkAuth, validateId, updateUser);
 
-router.delete("/:id", validateId, deleteUser);
+router.delete("/:id", checkAuth, validateId, deleteUser);
 
 export default router;

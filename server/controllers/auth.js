@@ -1,4 +1,5 @@
 // libraries
+import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import httpStatus from "http-status-codes";
@@ -8,6 +9,8 @@ import User from "../models/user.js";
 
 // constants
 import { LOGIN } from "../constants/messages.js";
+
+dotenv.config();
 
 export const login = async (req, res) => {
   try {
@@ -24,7 +27,7 @@ export const login = async (req, res) => {
     bcrypt.compare(password, user.password, (err, result) => {
       if (!err || result) {
         const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
-          expiresIn: process.env.JWT_DURATION
+          expiresIn: `${process.env.JWT_DURATION}h`
         });
 
         return res.status(httpStatus.OK).json({ token, auth: true });
@@ -35,6 +38,6 @@ export const login = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };

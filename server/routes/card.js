@@ -10,15 +10,16 @@ import {
 } from "../controllers/card.js";
 
 // middleware
+import { checkAuth } from "../middleware/checkAuth.js";
 import { validateId } from "../middleware/validateId.js";
 
 const router = express.Router();
 
-router.get("/", getCards);
-router.get("/:id", validateId, getCard);
+router.get("/", checkAuth, getCards);
+router.get("/:id", checkAuth, validateId, getCard);
 
-router.post("/", createCard);
+router.post("/", checkAuth, createCard);
 
-router.delete("/:id", validateId, deleteCard);
+router.delete("/:id", checkAuth, validateId, deleteCard);
 
 export default router;

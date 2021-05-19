@@ -1,9 +1,11 @@
 export const GENERAL = {
-  INVALID_ID: "Invalid id"
+  INVALID_ID: "Invalid id",
+  UNAUTHORIZED: "You don't have permissions for this action"
 };
 
 export const LOGIN = {
-  UNAUTHORIZED: "Wrong username or password"
+  UNAUTHORIZED: "Wrong username or password",
+  UNAUTHENTICATED: "Unauthenticated"
 };
 
 export const USER = {

@@ -10,15 +10,16 @@ import {
 } from "../controllers/collection.js";
 
 // middleware
+import { checkAuth } from "../middleware/checkAuth.js";
 import { validateId } from "../middleware/validateId.js";
 
 const router = express.Router();
 
-router.get("/", getCollections);
-router.get("/:id", validateId, getCollection);
+router.get("/", checkAuth, getCollections);
+router.get("/:id", checkAuth, validateId, getCollection);
 
-router.post("/", createCollection);
+router.post("/", checkAuth, createCollection);
 
-router.delete("/:id", validateId, deleteCollection);
+router.delete("/:id", checkAuth, validateId, deleteCollection);
 
 export default router;
