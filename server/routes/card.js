@@ -9,13 +9,16 @@ import {
   deleteCard
 } from "../controllers/card.js";
 
+// middleware
+import { validateId } from "../middleware/validateId.js";
+
 const router = express.Router();
 
 router.get("/", getCards);
-router.get("/:id", getCard);
+router.get("/:id", validateId, getCard);
 
 router.post("/", createCard);
 
-router.delete("/:id", deleteCard);
+router.delete("/:id", validateId, deleteCard);
 
 export default router;

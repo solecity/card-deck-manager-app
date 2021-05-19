@@ -9,13 +9,16 @@ import {
   deleteCollection
 } from "../controllers/collection.js";
 
+// middleware
+import { validateId } from "../middleware/validateId.js";
+
 const router = express.Router();
 
 router.get("/", getCollections);
-router.get("/:id", getCollection);
+router.get("/:id", validateId, getCollection);
 
 router.post("/", createCollection);
 
-router.delete("/:id", deleteCollection);
+router.delete("/:id", validateId, deleteCollection);
 
 export default router;
