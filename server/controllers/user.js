@@ -5,7 +5,8 @@ import httpStatus from "http-status-codes";
 import User from "../models/user.js";
 
 // constants
-import { USER } from "../constants/messages.js";
+import { GENERAL, USER } from "../constants/messages.js";
+import { USER_TYPES } from "../constants/general.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -20,11 +21,22 @@ export const getUsers = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const { id: _id } = req.params;
+    const loggedUser = req.user;
 
     const user = await User.findById(_id);
 
     if (!user) {
       return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      if (loggedUser.id !== _id) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
+
+      return res.status(httpStatus.OK).json(user);
     }
 
     return res.status(httpStatus.OK).json(user);
@@ -35,11 +47,21 @@ export const getUser = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const user = new User(req.body);
+    const { username } = req.body;
 
-    await user.save();
+    const user = await User.findOne({ username });
 
-    const newUser = user.toObject();
+    if (user) {
+      return res
+        .status(httpStatus.CONFLICT)
+        .json({ message: USER.CONFLIT_USERNAME });
+    }
+
+    const data = new User(req.body);
+
+    await data.save();
+
+    const newUser = data.toObject();
     delete newUser.password;
 
     return res
@@ -69,9 +91,6 @@ export const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
     }
-
-    console.log("🦄 ");
-    console.log(req.user);
 
     await user.remove();
 
