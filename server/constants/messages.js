@@ -1,3 +1,7 @@
+export const GENERAL = {
+  INVALID_ID: "Invalid id"
+};
+
 export const LOGIN = {
   UNAUTHORIZED: "Wrong username or password"
 };
@@ -5,23 +9,19 @@ export const LOGIN = {
 export const USER = {
   CREATED: "User created successfully",
   DELETED: "User deleted successfully",
-  UPDATED: "User updated successfully",
-  NOT_FOUND: "User not found",
-  INVALID_ID: "User id not valid"
+  UPDATED: "User updated successfully"
 };
 
 export const COLLECTION = {
   CREATED: "Collection created successfully",
   DELETED: "Collection deleted successfully",
   UPDATED: "Collection updated successfully",
-  NOT_FOUND: "Collection not found",
-  INVALID_ID: "Collection id not valid"
+  NOT_FOUND: "Collection not found"
 };
 
 export const CARD = {
   CREATED: "Card created successfully",
   DELETED: "Card deleted successfully",
   UPDATED: "Card updated successfully",
-  NOT_FOUND: "Card not found",
-  INVALID_ID: "Card id not valid"
+  NOT_FOUND: "Card not found"
 };
