@@ -12,17 +12,18 @@ import {
 
 // middleware
 import { checkAuth } from "../middleware/checkAuth.js";
+import { adminAuthorization } from "../middleware/adminAuthorization.js";
 import { validateId } from "../middleware/validateId.js";
 
 const router = express.Router();
 
-router.get("/", checkAuth, getUsers);
+router.get("/", checkAuth, adminAuthorization, getUsers);
 router.get("/:id", checkAuth, validateId, getUser);
 
 router.post("/", createUser);
 
 router.patch("/:id", checkAuth, validateId, updateUser);
 
-router.delete("/:id", checkAuth, validateId, deleteUser);
+router.delete("/:id", checkAuth, adminAuthorization, validateId, deleteUser);
 
 export default router;

@@ -36,16 +36,16 @@ userSchema.pre("save", function (next) {
   if (!this.isModified("password")) return next();
 
   try {
-    bcrypt.hash(this.password, saltRounds, (err, hash) => {
-      if (err) {
-        next(err);
+    bcrypt.hash(this.password, saltRounds, (error, hash) => {
+      if (error) {
+        next(error);
       } else {
         this.password = hash;
         next();
       }
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 });
 
