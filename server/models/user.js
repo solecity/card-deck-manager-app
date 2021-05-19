@@ -23,7 +23,7 @@ const userSchema = new Schema({
     select: false
   },
   type: {
-    type: String,
+    type: Number,
     default: 2
   },
   createdAt: {
