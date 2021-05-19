@@ -10,15 +10,18 @@ import {
   deleteUser
 } from "../controllers/user.js";
 
+// middleware
+import { validateId } from "../middleware/validateId.js";
+
 const router = express.Router();
 
 router.get("/", getUsers);
-router.get("/:id", getUser);
+router.get("/:id", validateId, getUser);
 
 router.post("/", createUser);
 
-router.patch("/:id", updateUser);
+router.patch("/:id", validateId, updateUser);
 
-router.delete("/:id", deleteUser);
+router.delete("/:id", validateId, deleteUser);
 
 export default router;
