@@ -35,6 +35,6 @@ export const login = async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };

@@ -13,7 +13,7 @@ export const getCollections = async (req, res) => {
 
     return res.status(httpStatus.OK).json(collections);
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -31,7 +31,7 @@ export const getCollection = async (req, res) => {
 
     return res.status(httpStatus.OK).json(collection);
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -45,7 +45,7 @@ export const createCollection = async (req, res) => {
       .status(httpStatus.CREATED)
       .json({ collection, message: COLLECTION.CREATED });
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json(error);
+    res.status(httpStatus.BAD_REQUEST).json(error);
   }
 };
 
@@ -55,7 +55,7 @@ export const deleteCollection = async (req, res) => {
 
     await Collection.findByIdAndDelete(id, (err, doc) => {
       if (err || !doc) {
-        return res
+        res
           .status(httpStatus.NOT_FOUND)
           .json({ message: COLLECTION.NOT_FOUND });
       }
@@ -63,6 +63,6 @@ export const deleteCollection = async (req, res) => {
 
     return res.status(httpStatus.OK).json({ message: COLLECTION.DELETED });
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };

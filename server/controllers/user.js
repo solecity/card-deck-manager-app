@@ -13,7 +13,7 @@ export const getUsers = async (req, res) => {
 
     return res.status(httpStatus.OK).json(users);
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -29,7 +29,7 @@ export const getUser = async (req, res) => {
 
     return res.status(httpStatus.OK).json(user);
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -39,9 +39,14 @@ export const createUser = async (req, res) => {
 
     await user.save();
 
-    return res.status(httpStatus.CREATED).json({ user, message: USER.CREATED });
+    const newUser = user.toObject();
+    delete newUser.password;
+
+    return res
+      .status(httpStatus.CREATED)
+      .json({ user: newUser, message: USER.CREATED });
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json(error);
+    res.status(httpStatus.BAD_REQUEST).json(error);
   }
 };
 
@@ -51,7 +56,7 @@ export const updateUser = async (req, res) => {
 
     // update or err
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -61,14 +66,12 @@ export const deleteUser = async (req, res) => {
 
     await User.findByIdAndDelete(id, (err, doc) => {
       if (err || !doc) {
-        return res
-          .status(httpStatus.NOT_FOUND)
-          .json({ message: USER.NOT_FOUND });
+        res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
       }
     });
 
     return res.status(httpStatus.OK).json({ message: USER.DELETED });
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+    res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
