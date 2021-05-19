@@ -33,6 +33,6 @@ export const login = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json(error);
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };

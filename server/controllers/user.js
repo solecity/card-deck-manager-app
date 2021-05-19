@@ -13,7 +13,7 @@ export const getUsers = async (req, res) => {
 
     return res.status(httpStatus.OK).json(users);
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json(error);
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -29,7 +29,7 @@ export const getUser = async (req, res) => {
 
     return res.status(httpStatus.OK).json(user);
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json(error);
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -51,7 +51,7 @@ export const updateUser = async (req, res) => {
 
     // update or err
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json(error);
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -67,6 +67,6 @@ export const deleteUser = async (req, res) => {
 
     return res.status(httpStatus.OK).json({ message: USER.DELETED });
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json(error);
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
