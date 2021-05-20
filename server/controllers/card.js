@@ -11,7 +11,7 @@ import Collection from "../models/collection.js";
 import { USER_TYPES } from "../constants/general.js";
 import { GENERAL, USER, CARD, COLLECTION } from "../constants/messages.js";
 
-const { isValidObjectId } = mongoose;
+const { Types, isValidObjectId } = mongoose;
 
 export const getCards = async (req, res) => {
   try {
@@ -87,10 +87,6 @@ export const createCard = async (req, res) => {
           notValid = true;
         }
 
-        collections.some((collection) =>
-          console.log(typeof collection.id + " === " + typeof id)
-        );
-
         if (!collections.some((collection) => collection.id === id)) {
           notFound = true;
         }
@@ -137,6 +133,18 @@ export const deleteCard = async (req, res) => {
           .json({ message: GENERAL.UNAUTHORIZED });
       }
     }
+
+    Collection.updateMany(
+      {},
+      { $pull: { cards: Types.ObjectId(_id) } },
+      (error) => {
+        if (error) {
+          return res
+            .status(httpStatus.BAD_REQUEST)
+            .json({ message: error.message });
+        }
+      }
+    );
 
     await card.remove();
 
