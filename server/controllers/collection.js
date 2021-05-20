@@ -11,7 +11,7 @@ import Collection from "../models/collection.js";
 import { USER_TYPES } from "../constants/general.js";
 import { GENERAL, USER, CARD, COLLECTION } from "../constants/messages.js";
 
-const { isValidObjectId } = mongoose;
+const { Types, isValidObjectId } = mongoose;
 
 export const getCollections = async (req, res) => {
   try {
@@ -76,6 +76,35 @@ export const createCollection = async (req, res) => {
 
     if (!user) {
       return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    if (data.cards && Boolean(data.cards.length)) {
+      let notValid = false;
+      let notFound = false;
+
+      const cards = await Card.find();
+
+      data.cards.map((id) => {
+        if (!isValidObjectId(id)) {
+          notValid = true;
+        }
+
+        if (!cards.some((card) => card.id === id)) {
+          notFound = true;
+        }
+      });
+
+      if (notValid) {
+        return res
+          .status(httpStatus.BAD_REQUEST)
+          .json({ message: CARD.INVALID_ID });
+      }
+
+      if (notFound) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: CARD.NOT_FOUND });
+      }
     }
 
     const collection = new Collection(data);

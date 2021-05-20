@@ -29,5 +29,6 @@ export const CARD = {
   CREATED: "Card created successfully",
   DELETED: "Card deleted successfully",
   UPDATED: "Card updated successfully",
-  NOT_FOUND: "Card not found"
+  NOT_FOUND: "Card not found",
+  INVALID_ID: "Invalid card id"
 };
