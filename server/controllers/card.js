@@ -1,12 +1,17 @@
 // libraries
+import mongoose from "mongoose";
 import httpStatus from "http-status-codes";
 
-// model
+// models
+import User from "../models/user.js";
 import Card from "../models/card.js";
+import Collection from "../models/collection.js";
 
 // constants
 import { USER_TYPES } from "../constants/general.js";
-import { GENERAL, CARD } from "../constants/messages.js";
+import { GENERAL, USER, CARD, COLLECTION } from "../constants/messages.js";
+
+const { isValidObjectId } = mongoose;
 
 export const getCards = async (req, res) => {
   try {
@@ -57,6 +62,51 @@ export const createCard = async (req, res) => {
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
       data.user = loggedUser._id;
+    }
+
+    if (!isValidObjectId(data.user)) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: USER.INVALID_ID });
+    }
+
+    const user = await User.findById(data.user);
+
+    if (!user) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    if (data.collections && Boolean(data.collections.length)) {
+      let notValid = false;
+      let notFound = false;
+
+      const collections = await Collection.find();
+
+      data.collections.map((id) => {
+        if (!isValidObjectId(id)) {
+          notValid = true;
+        }
+
+        collections.some((collection) =>
+          console.log(typeof collection.id + " === " + typeof id)
+        );
+
+        if (!collections.some((collection) => collection.id === id)) {
+          notFound = true;
+        }
+      });
+
+      if (notValid) {
+        return res
+          .status(httpStatus.BAD_REQUEST)
+          .json({ message: COLLECTION.INVALID_ID });
+      }
+
+      if (notFound) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: COLLECTION.NOT_FOUND });
+      }
     }
 
     const card = new Card(data);

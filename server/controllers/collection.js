@@ -1,12 +1,17 @@
 // libraries
+import mongoose from "mongoose";
 import httpStatus from "http-status-codes";
 
 // model
+import User from "../models/user.js";
+import Card from "../models/card.js";
 import Collection from "../models/collection.js";
 
 // constants
 import { USER_TYPES } from "../constants/general.js";
-import { GENERAL, COLLECTION } from "../constants/messages.js";
+import { GENERAL, USER, CARD, COLLECTION } from "../constants/messages.js";
+
+const { isValidObjectId } = mongoose;
 
 export const getCollections = async (req, res) => {
   try {
@@ -59,6 +64,18 @@ export const createCollection = async (req, res) => {
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
       data.user = loggedUser._id;
+    }
+
+    if (!isValidObjectId(data.user)) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: USER.INVALID_ID });
+    }
+
+    const user = await User.findById(data.user);
+
+    if (!user) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
     }
 
     const collection = new Collection(data);

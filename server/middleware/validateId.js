@@ -11,13 +11,13 @@ export const validateId = (req, res, next) => {
   try {
     const { id } = req.params;
 
-    if (isValidObjectId(id)) {
-      next();
-    } else {
+    if (!isValidObjectId(id)) {
       return res
         .status(httpStatus.BAD_REQUEST)
         .json({ message: GENERAL.INVALID_ID });
     }
+
+    return next();
   } catch (error) {
     return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
