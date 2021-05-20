@@ -1,11 +1,11 @@
 // routes
-import auth from "./auth.js";
+import token from "./token.js";
 import user from "./user.js";
 import card from "./card.js";
 import collection from "./collection.js";
 
 export default {
-  auth,
+  token,
   user,
   card,
   collection

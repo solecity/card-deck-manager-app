@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use("/login", routes.auth);
+app.use("/token", routes.token);
 app.use("/users", routes.user);
 app.use("/cards", routes.card);
 app.use("/collections", routes.collection);
