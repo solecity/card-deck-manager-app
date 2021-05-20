@@ -140,6 +140,18 @@ export const deleteCollection = async (req, res) => {
       }
     }
 
+    Card.updateMany(
+      {},
+      { $pull: { collections: Types.ObjectId(_id) } },
+      (error) => {
+        if (error) {
+          return res
+            .status(httpStatus.BAD_REQUEST)
+            .json({ message: error.message });
+        }
+      }
+    );
+
     await collection.remove();
 
     return res.status(httpStatus.OK).json({ message: COLLECTION.DELETED });
