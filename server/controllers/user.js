@@ -3,6 +3,8 @@ import httpStatus from "http-status-codes";
 
 // model
 import User from "../models/user.js";
+import Card from "../models/card.js";
+import Collection from "../models/collection.js";
 
 // constants
 import { USER_TYPES } from "../constants/general.js";
@@ -91,6 +93,10 @@ export const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
     }
+
+    await Card.deleteMany({ user: _id });
+
+    await Collection.deleteMany({ user: _id });
 
     await user.remove();
 
