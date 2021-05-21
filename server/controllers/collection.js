@@ -158,7 +158,7 @@ export const updateCollection = async (req, res) => {
 export const updateCollectionCards = async (req, res) => {
   try {
     const { id: _id } = req.params;
-    const cardId = req.body.card;
+    const { cards: newCards } = req.body;
     const loggedUser = req.user;
 
     const collection = await Collection.findById(_id);
@@ -177,27 +177,41 @@ export const updateCollectionCards = async (req, res) => {
       }
     }
 
-    const card = await Card.findById(cardId);
+    const cards = await Card.find();
 
-    if (!card) {
-      return res.status(httpStatus.NOT_FOUND).json({ message: CARD.NOT_FOUND });
+    for (const i in newCards) {
+      if (
+        !isValidObjectId(newCards[i]) ||
+        !cards.some((card) => card.id === newCards[i])
+      ) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ id: newCards[i], message: CARD.NOT_FOUND });
+      }
+
+      const card = await Card.findById(newCards[i]);
+
+      if (loggedUser.type !== USER_TYPES.ADMIN) {
+        if (String(card.user) !== loggedUser.id) {
+          return res.status(httpStatus.FORBIDDEN).json({
+            id: newCards[i],
+            message: CARD.DOES_NOT_BELONG_LOGGED_USER
+          });
+        }
+      } else {
+        if (String(card.user) !== String(collection.user)) {
+          return res
+            .status(httpStatus.FORBIDDEN)
+            .json({ id: newCards[i], message: CARD.DOES_NOT_BELONG_USER });
+        }
+      }
+
+      card.collections.push(_id);
+
+      await card.save();
     }
 
-    if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (String(card.user) !== loggedUser.id) {
-        return res
-          .status(httpStatus.FORBIDDEN)
-          .json({ message: CARD.DOES_NOT_BELONG_LOGGED_USER });
-      }
-    } else {
-      if (String(card.user) !== String(collection.user)) {
-        return res
-          .status(httpStatus.FORBIDDEN)
-          .json({ message: CARD.DOES_NOT_BELONG_USER });
-      }
-    }
-
-    collection.cards.unshift(card);
+    collection.cards = newCards;
 
     await collection.save();
 
