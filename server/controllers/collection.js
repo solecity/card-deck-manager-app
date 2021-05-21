@@ -121,6 +121,42 @@ export const createCollection = async (req, res) => {
   }
 };
 
+export const updateCollection = async (req, res) => {
+  try {
+    const { id: _id } = req.params;
+    const data = req.body;
+    const loggedUser = req.user;
+
+    const collection = await Collection.findById(_id);
+
+    if (!collection) {
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: COLLECTION.NOT_FOUND });
+    }
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      if (collection.user !== loggedUser._id) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
+    }
+
+    collection.name = data.name;
+    collection.cards = data.cards || collection.cards;
+    collection.user = data.user || collection.user;
+
+    await collection.save();
+
+    return res
+      .status(httpStatus.OK)
+      .json({ collection, message: COLLECTION.UPDATED });
+  } catch (error) {
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+  }
+};
+
 export const deleteCollection = async (req, res) => {
   try {
     const { id: _id } = req.params;

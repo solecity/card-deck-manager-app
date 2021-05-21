@@ -6,6 +6,7 @@ import {
   getCollections,
   getCollection,
   createCollection,
+  updateCollection,
   deleteCollection
 } from "../controllers/collection.js";
 
@@ -20,6 +21,7 @@ import { validateSchema } from "../middleware/validateSchema.js";
 const router = express.Router();
 
 router.get("/", checkAuth, getCollections);
+
 router.get("/:id", checkAuth, validateId, getCollection);
 
 router.post(
@@ -29,7 +31,13 @@ router.post(
   createCollection
 );
 
-router.patch("/:id", checkAuth, validateId); //////////
+router.put(
+  "/:id",
+  checkAuth,
+  validateSchema(validateCollection),
+  validateId,
+  updateCollection
+);
 
 router.delete("/:id", checkAuth, validateId, deleteCollection);
 
