@@ -37,7 +37,7 @@ router.patch(
 );
 
 router.patch(
-  "/:id",
+  "/admin/:id",
   checkAuth,
   adminAuthorization,
   validateSchema(validateUser),
