@@ -19,9 +19,11 @@ export const getCollections = async (req, res) => {
     let collections = [];
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      collections = await Collection.find({ user: loggedUser._id });
+      collections = await Collection.find({ user: loggedUser._id }).populate(
+        "user"
+      );
     } else {
-      collections = await Collection.find();
+      collections = await Collection.find().populate("user");
     }
 
     return res.status(httpStatus.OK).json(collections);
@@ -35,7 +37,7 @@ export const getCollection = async (req, res) => {
     const { id: _id } = req.params;
     const loggedUser = req.user;
 
-    const collection = await Collection.findById(_id);
+    const collection = await Collection.findById(_id).populate("user");
 
     if (!collection) {
       return res

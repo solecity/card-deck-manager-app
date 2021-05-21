@@ -14,12 +14,13 @@ const cardSchema = new Schema({
   },
   value: {
     type: Number,
-    default: 0
+    default: 1
   },
   collections: [Schema.Types.ObjectId],
   user: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: "User"
   }
 });
 

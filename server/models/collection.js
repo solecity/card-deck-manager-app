@@ -11,7 +11,8 @@ const collectionchema = new Schema({
   cards: [Schema.Types.ObjectId],
   user: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: "User"
   }
 });
 

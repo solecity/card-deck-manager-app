@@ -19,9 +19,9 @@ export const getCards = async (req, res) => {
     let cards = [];
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      cards = await Card.find({ user: loggedUser._id });
+      cards = await Card.find({ user: loggedUser._id }).populate("user");
     } else {
-      cards = await Card.find();
+      cards = await Card.find().populate("user");
     }
 
     return res.status(httpStatus.OK).json(cards);
@@ -35,7 +35,7 @@ export const getCard = async (req, res) => {
     const { id: _id } = req.params;
     const loggedUser = req.user;
 
-    const card = await Card.findById(_id);
+    const card = await Card.findById(_id).populate("user");
 
     if (!card) {
       return res.status(httpStatus.NOT_FOUND).json({ message: CARD.NOT_FOUND });
