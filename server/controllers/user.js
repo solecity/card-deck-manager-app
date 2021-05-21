@@ -74,11 +74,22 @@ export const createUser = async (req, res) => {
   }
 };
 
-export const updateUser = async (req, res) => {
+export const updateUserType = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id: _id } = req.params;
+    const { type } = req.body;
 
-    // update or err
+    const user = await User.findById(_id);
+
+    if (!user) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    user.type = type;
+
+    await user.save();
+
+    return res.status(httpStatus.OK).json({ user, message: USER.UPDATED });
   } catch (error) {
     return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
