@@ -4,6 +4,7 @@ import express from "express";
 // controller
 import {
   getCards,
+  getUserCards,
   getCard,
   createCard,
   updateCard,
@@ -15,12 +16,15 @@ import { validateCard } from "../config/schemas/card.js";
 
 // middleware
 import { checkAuth } from "../middleware/checkAuth.js";
+import { adminAuthorization } from "../middleware/adminAuthorization.js";
 import { validateId } from "../middleware/validateId.js";
 import { validateSchema } from "../middleware/validateSchema.js";
 
 const router = express.Router();
 
-router.get("/", checkAuth, getCards);
+router.get("/", checkAuth, adminAuthorization, getCards);
+
+router.get("/user", checkAuth, getUserCards);
 
 router.get("/:id", checkAuth, validateId, getCard);
 

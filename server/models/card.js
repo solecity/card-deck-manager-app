@@ -16,11 +16,15 @@ const cardSchema = new Schema({
     type: Number,
     default: 1
   },
-  collections: [Schema.Types.ObjectId],
   user: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "User"
+    _id: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
+    username: {
+      type: String,
+      required: true
+    }
   }
 });
 

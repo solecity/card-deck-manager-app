@@ -6,8 +6,10 @@ export const validateCard = (card) => {
     name: joi.string().max(30).required(),
     description: joi.string().required(),
     value: joi.number().positive().required(),
-    collections: joi.array().items(joi.string()),
-    user: joi.string()
+    user: joi.object({
+      _id: joi.string(),
+      username: joi.string()
+    })
   });
 
   return schema.validate(card);
