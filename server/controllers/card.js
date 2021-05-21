@@ -115,6 +115,39 @@ export const createCard = async (req, res) => {
   }
 };
 
+export const updateCard = async (req, res) => {
+  try {
+    const { id: _id } = req.params;
+    const data = req.body;
+    const loggedUser = req.user;
+
+    const card = await Card.findById(_id);
+
+    if (!card) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: CARD.NOT_FOUND });
+    }
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      if (card.user !== loggedUser._id) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
+    }
+
+    card.name = data.name;
+    card.description = data.description;
+    card.value = data.value;
+    card.user = data.user || card.user;
+
+    await card.save();
+
+    return res.status(httpStatus.OK).json({ card, message: CARD.UPDATED });
+  } catch (error) {
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+  }
+};
+
 export const deleteCard = async (req, res) => {
   try {
     const { id: _id } = req.params;

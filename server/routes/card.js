@@ -6,6 +6,7 @@ import {
   getCards,
   getCard,
   createCard,
+  updateCard,
   deleteCard
 } from "../controllers/card.js";
 
@@ -20,11 +21,18 @@ import { validateSchema } from "../middleware/validateSchema.js";
 const router = express.Router();
 
 router.get("/", checkAuth, getCards);
+
 router.get("/:id", checkAuth, validateId, getCard);
 
 router.post("/", checkAuth, validateSchema(validateCard), createCard);
 
-router.patch("/:id", checkAuth, validateId); //////////
+router.put(
+  "/:id",
+  checkAuth,
+  validateSchema(validateCard),
+  validateId,
+  updateCard
+);
 
 router.delete("/:id", checkAuth, validateId, deleteCard);
 
