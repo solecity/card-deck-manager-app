@@ -19,9 +19,9 @@ export const getCards = async (req, res) => {
     let cards = [];
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      cards = await Card.find({ user: loggedUser._id }).populate("user");
+      cards = await Card.find({ user: loggedUser._id });
     } else {
-      cards = await Card.find().populate("user");
+      cards = await Card.find();
     }
 
     return res.status(httpStatus.OK).json(cards);
@@ -35,14 +35,14 @@ export const getCard = async (req, res) => {
     const { id: _id } = req.params;
     const loggedUser = req.user;
 
-    const card = await Card.findById(_id).populate("user");
+    const card = await Card.findById(_id);
 
     if (!card) {
       return res.status(httpStatus.NOT_FOUND).json({ message: CARD.NOT_FOUND });
     }
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (card.user !== loggedUser._id) {
+      if (String(card.user) !== loggedUser.id) {
         return res
           .status(httpStatus.FORBIDDEN)
           .json({ message: GENERAL.UNAUTHORIZED });
@@ -128,7 +128,7 @@ export const updateCard = async (req, res) => {
     }
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (card.user !== loggedUser._id) {
+      if (String(card.user) !== loggedUser.id) {
         return res
           .status(httpStatus.FORBIDDEN)
           .json({ message: GENERAL.UNAUTHORIZED });
@@ -161,7 +161,7 @@ export const deleteCard = async (req, res) => {
     }
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (card.user !== loggedUser._id) {
+      if (String(card.user) !== loggedUser.id) {
         return res
           .status(httpStatus.FORBIDDEN)
           .json({ message: GENERAL.UNAUTHORIZED });
