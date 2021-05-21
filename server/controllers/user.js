@@ -37,8 +37,6 @@ export const getUser = async (req, res) => {
           .status(httpStatus.FORBIDDEN)
           .json({ message: GENERAL.UNAUTHORIZED });
       }
-
-      return res.status(httpStatus.OK).json(user);
     }
 
     return res.status(httpStatus.OK).json(user);
@@ -78,11 +76,18 @@ export const updateUserPassword = async (req, res) => {
   try {
     const { id: _id } = req.params;
     const { password } = req.body;
+    const loggedUser = req.user;
 
     const user = await User.findById(_id);
 
     if (!user) {
       return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    if (loggedUser.id !== _id) {
+      return res
+        .status(httpStatus.FORBIDDEN)
+        .json({ message: GENERAL.UNAUTHORIZED });
     }
 
     user.password = password;
@@ -124,11 +129,18 @@ export const updateUserType = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { id: _id } = req.params;
+    const loggedUser = req.user;
 
     const user = await User.findById(_id);
 
     if (!user) {
       return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    if (loggedUser.id === _id) {
+      return res
+        .status(httpStatus.FORBIDDEN)
+        .json({ message: USER.FORBIDDEN_DELETE });
     }
 
     await Card.deleteMany({ user: _id });

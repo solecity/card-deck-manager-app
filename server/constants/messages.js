@@ -14,7 +14,8 @@ export const USER = {
   UPDATED: "User updated successfully",
   NOT_FOUND: "User not found",
   INVALID_ID: "Invalid user id",
-  CONFLIT_USERNAME: "Username is already taken"
+  CONFLIT_USERNAME: "Username is already taken",
+  FORBIDDEN_DELETE: "You cannot delete yourself"
 };
 
 export const COLLECTION = {
