@@ -13,8 +13,8 @@ export const validateId = (req, res, next) => {
 
     if (!isValidObjectId(id)) {
       return res
-        .status(httpStatus.BAD_REQUEST)
-        .json({ message: GENERAL.INVALID_ID });
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: GENERAL.NOT_FOUND });
     }
 
     return next();
