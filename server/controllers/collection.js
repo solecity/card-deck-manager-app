@@ -15,14 +15,18 @@ const { Types, isValidObjectId } = mongoose;
 
 export const getCollections = async (req, res) => {
   try {
-    const loggedUser = req.user;
-    let collections = [];
+    const collections = await Collection.find();
 
-    if (loggedUser.type !== USER_TYPES.ADMIN) {
-      collections = await Collection.find({ user: loggedUser._id });
-    } else {
-      collections = await Collection.find();
-    }
+    return res.status(httpStatus.OK).json(collections);
+  } catch (error) {
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+  }
+};
+
+export const getUserCollections = async (req, res) => {
+  try {
+    const loggedUser = req.user;
+    const collections = await Collection.find({ "user._id": loggedUser._id });
 
     return res.status(httpStatus.OK).json(collections);
   } catch (error) {
@@ -44,7 +48,7 @@ export const getCollection = async (req, res) => {
     }
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (String(collection.user) !== loggedUser.id) {
+      if (String(collection.user._id) !== loggedUser.id) {
         return res
           .status(httpStatus.FORBIDDEN)
           .json({ message: GENERAL.UNAUTHORIZED });
@@ -62,14 +66,15 @@ export const createCollection = async (req, res) => {
     const loggedUser = req.user;
     const data = req.body;
 
-    if (loggedUser.type !== USER_TYPES.ADMIN) {
-      data.user = loggedUser._id;
+    if (!data.user) {
+      data.user = {
+        _id: loggedUser._id,
+        username: loggedUser.username
+      };
     }
 
-    if (!isValidObjectId(data.user)) {
-      return res
-        .status(httpStatus.BAD_REQUEST)
-        .json({ message: USER.INVALID_ID });
+    if (!isValidObjectId(data.user._id)) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
     }
 
     const user = await User.findById(data.user);
@@ -79,31 +84,35 @@ export const createCollection = async (req, res) => {
     }
 
     if (data.cards && Boolean(data.cards.length)) {
-      let notValid = false;
-      let notFound = false;
-
       const cards = await Card.find();
 
-      data.cards.map((id) => {
-        if (!isValidObjectId(id)) {
-          notValid = true;
+      for (const i in data.cards) {
+        if (
+          !isValidObjectId(data.cards[i]._id) ||
+          !cards.some((card) => card.id === data.cards[i]._id)
+        ) {
+          return res
+            .status(httpStatus.NOT_FOUND)
+            .json({ card: data.cards[i], message: CARD.NOT_FOUND });
         }
 
-        if (!cards.some((card) => card.id === id)) {
-          notFound = true;
+        const card = await Card.findById(data.cards[i]._id);
+
+        if (loggedUser.type !== USER_TYPES.ADMIN) {
+          if (String(card.user._id) !== loggedUser.id) {
+            return res.status(httpStatus.FORBIDDEN).json({
+              card: data.cards[i],
+              message: CARD.DOES_NOT_BELONG_LOGGED_USER
+            });
+          }
+        } else {
+          if (String(card.user._id) !== String(data.user._id)) {
+            return res.status(httpStatus.FORBIDDEN).json({
+              card: data.cards[i],
+              message: CARD.DOES_NOT_BELONG_USER
+            });
+          }
         }
-      });
-
-      if (notValid) {
-        return res
-          .status(httpStatus.BAD_REQUEST)
-          .json({ message: CARD.INVALID_ID });
-      }
-
-      if (notFound) {
-        return res
-          .status(httpStatus.NOT_FOUND)
-          .json({ message: CARD.NOT_FOUND });
       }
     }
 
@@ -134,7 +143,7 @@ export const updateCollection = async (req, res) => {
     }
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (String(collection.user) !== loggedUser.id) {
+      if (String(collection.user._id) !== loggedUser.id) {
         return res
           .status(httpStatus.FORBIDDEN)
           .json({ message: GENERAL.UNAUTHORIZED });
@@ -142,7 +151,6 @@ export const updateCollection = async (req, res) => {
     }
 
     collection.name = data.name;
-    collection.cards = data.cards || collection.cards;
     collection.user = data.user || collection.user;
 
     await collection.save();
@@ -170,7 +178,7 @@ export const updateCollectionCards = async (req, res) => {
     }
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (String(collection.user) !== loggedUser.id) {
+      if (String(collection.user._id) !== loggedUser.id) {
         return res
           .status(httpStatus.FORBIDDEN)
           .json({ message: GENERAL.UNAUTHORIZED });
@@ -181,34 +189,30 @@ export const updateCollectionCards = async (req, res) => {
 
     for (const i in newCards) {
       if (
-        !isValidObjectId(newCards[i]) ||
-        !cards.some((card) => card.id === newCards[i])
+        !isValidObjectId(newCards[i]._id) ||
+        !cards.some((card) => card.id === newCards[i]._id)
       ) {
         return res
           .status(httpStatus.NOT_FOUND)
-          .json({ id: newCards[i], message: CARD.NOT_FOUND });
+          .json({ card: newCards[i], message: CARD.NOT_FOUND });
       }
 
-      const card = await Card.findById(newCards[i]);
+      const card = await Card.findById(newCards[i]._id);
 
       if (loggedUser.type !== USER_TYPES.ADMIN) {
-        if (String(card.user) !== loggedUser.id) {
+        if (String(card.user._id) !== loggedUser.id) {
           return res.status(httpStatus.FORBIDDEN).json({
-            id: newCards[i],
+            card: newCards[i],
             message: CARD.DOES_NOT_BELONG_LOGGED_USER
           });
         }
       } else {
-        if (String(card.user) !== String(collection.user)) {
+        if (String(card.user._id) !== String(collection.user._id)) {
           return res
             .status(httpStatus.FORBIDDEN)
-            .json({ id: newCards[i], message: CARD.DOES_NOT_BELONG_USER });
+            .json({ card: newCards[i], message: CARD.DOES_NOT_BELONG_USER });
         }
       }
-
-      card.collections.push(_id);
-
-      await card.save();
     }
 
     collection.cards = newCards;
@@ -237,24 +241,12 @@ export const deleteCollection = async (req, res) => {
     }
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (String(collection.user) !== loggedUser.id) {
+      if (String(collection.user._id) !== loggedUser.id) {
         return res
           .status(httpStatus.FORBIDDEN)
           .json({ message: GENERAL.UNAUTHORIZED });
       }
     }
-
-    Card.updateMany(
-      {},
-      { $pull: { collections: Types.ObjectId(_id) } },
-      (error) => {
-        if (error) {
-          return res
-            .status(httpStatus.BAD_REQUEST)
-            .json({ message: error.message });
-        }
-      }
-    );
 
     await collection.remove();
 

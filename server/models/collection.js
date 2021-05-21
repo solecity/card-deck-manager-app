@@ -8,11 +8,23 @@ const collectionchema = new Schema({
     type: String,
     required: true
   },
-  cards: [Schema.Types.ObjectId],
+  cards: [
+    {
+      _id: Schema.Types.ObjectId,
+      name: String,
+      description: String,
+      value: Number
+    }
+  ],
   user: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "User"
+    _id: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
+    username: {
+      type: String,
+      required: true
+    }
   }
 });
 
