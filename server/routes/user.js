@@ -6,6 +6,7 @@ import {
   getUsers,
   getUser,
   createUser,
+  updateUserPassword,
   updateUserType,
   deleteUser
 } from "../controllers/user.js";
@@ -22,11 +23,27 @@ import { validateSchema } from "../middleware/validateSchema.js";
 const router = express.Router();
 
 router.get("/", checkAuth, adminAuthorization, getUsers);
+
 router.get("/:id", checkAuth, validateId, getUser);
 
 router.post("/", validateSchema(validateUser), createUser);
 
-router.patch("/:id", checkAuth, adminAuthorization, validateId, updateUserType);
+router.patch(
+  "/:id",
+  checkAuth,
+  validateSchema(validateUser),
+  validateId,
+  updateUserPassword
+);
+
+router.patch(
+  "/:id",
+  checkAuth,
+  adminAuthorization,
+  validateSchema(validateUser),
+  validateId,
+  updateUserType
+);
 
 router.delete("/:id", checkAuth, adminAuthorization, validateId, deleteUser);
 

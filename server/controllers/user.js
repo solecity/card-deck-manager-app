@@ -74,6 +74,32 @@ export const createUser = async (req, res) => {
   }
 };
 
+export const updateUserPassword = async (req, res) => {
+  try {
+    const { id: _id } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findById(_id);
+
+    if (!user) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    user.password = password;
+
+    await user.save();
+
+    const updatedUser = user.toObject();
+    delete updatedUser.password;
+
+    return res
+      .status(httpStatus.OK)
+      .json({ user: updatedUser, message: USER.UPDATED });
+  } catch (error) {
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
+  }
+};
+
 export const updateUserType = async (req, res) => {
   try {
     const { id: _id } = req.params;

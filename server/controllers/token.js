@@ -24,8 +24,8 @@ export const login = async (req, res) => {
         .json({ message: LOGIN.UNAUTHORIZED });
     }
 
-    bcrypt.compare(password, user.password, (err, result) => {
-      if (!err || result) {
+    bcrypt.compare(password, user.password, (error, result) => {
+      if (!error && result) {
         const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
           expiresIn: `${process.env.JWT_DURATION}h`
         });
