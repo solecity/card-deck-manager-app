@@ -138,6 +138,7 @@ export const updateCard = async (req, res) => {
     card.name = data.name;
     card.description = data.description;
     card.value = data.value;
+    card.collections = data.collections || collection.collections;
     card.user = data.user || card.user;
 
     await card.save();
