@@ -23,7 +23,9 @@ export const COLLECTION = {
   DELETED: "Collection deleted successfully",
   UPDATED: "Collection updated successfully",
   NOT_FOUND: "Collection not found",
-  INVALID_ID: "Invalid collection id"
+  INVALID_ID: "Invalid collection id",
+  DOES_NOT_BELONG_LOGGED_USER: "This collection does not belong to you",
+  DOES_NOT_BELONG_USER: "This collection does not belong to this card user"
 };
 
 export const CARD = {
@@ -31,5 +33,7 @@ export const CARD = {
   DELETED: "Card deleted successfully",
   UPDATED: "Card updated successfully",
   NOT_FOUND: "Card not found",
-  INVALID_ID: "Invalid card id"
+  INVALID_ID: "Invalid card id",
+  DOES_NOT_BELONG_LOGGED_USER: "This card does not belong to you",
+  DOES_NOT_BELONG_USER: "This card does not belong to this collection user"
 };

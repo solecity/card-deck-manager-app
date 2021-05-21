@@ -7,6 +7,7 @@ import {
   getCollection,
   createCollection,
   updateCollection,
+  updateCollectionCards,
   deleteCollection
 } from "../controllers/collection.js";
 
@@ -38,6 +39,8 @@ router.put(
   validateId,
   updateCollection
 );
+
+router.patch("/:id", checkAuth, validateId, updateCollectionCards);
 
 router.delete("/:id", checkAuth, validateId, deleteCollection);
 
