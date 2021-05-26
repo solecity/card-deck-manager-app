@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
 
-import { login, logout } from "./auth";
+import authSlice from "./auth";
 
-export default combineReducers({ login, logout });
+export default combineReducers({ authSlice });

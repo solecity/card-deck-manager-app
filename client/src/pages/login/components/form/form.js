@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 // api
-import { login } from "../../../../services/auth";
+import { fetchToken } from "../../../../services/auth";
 
 // reducers
 import { saveToken } from "../../../../reducers/auth";
@@ -15,7 +15,7 @@ import { Grid, TextField, Typography, Button, Link } from "@material-ui/core";
 // styles
 import useStyles from "./styles";
 
-const Login = () => {
+const Form = () => {
   const classes = useStyles();
 
   const [loginData, setLoginData] = useState({ username: "", password: "" });
@@ -27,7 +27,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = await login(loginData);
+    const token = await fetchToken(loginData);
 
     if (token) {
       dispatch(saveToken(token));
@@ -86,4 +86,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Form;
