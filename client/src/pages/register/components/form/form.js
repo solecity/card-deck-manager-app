@@ -5,6 +5,12 @@ import { useHistory } from "react-router-dom";
 // external components
 import { Grid, TextField, Typography, Button, Link } from "@material-ui/core";
 
+// api
+import { create } from "../../../../services/user";
+
+//hooks
+import { useAuth } from "../../../../hooks/useAuth";
+
 // styles
 import useStyles from "./styles";
 
@@ -19,10 +25,19 @@ const Form = () => {
 
   const history = useHistory();
 
+  const { login } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(registerData);
+    const res = await create(registerData);
+
+    if (res) {
+      login({
+        username: registerData.username,
+        password: registerData.password
+      });
+    }
   };
 
   return (
@@ -33,6 +48,7 @@ const Form = () => {
       <form noValidate onSubmit={handleSubmit}>
         <TextField
           className={classes.input}
+          required
           fullWidth
           variant="outlined"
           size="small"
@@ -45,6 +61,7 @@ const Form = () => {
         />
         <TextField
           className={classes.input}
+          required
           fullWidth
           variant="outlined"
           size="small"
@@ -57,6 +74,7 @@ const Form = () => {
         />
         <TextField
           className={classes.input}
+          required
           fullWidth
           variant="outlined"
           size="small"
@@ -74,7 +92,7 @@ const Form = () => {
           color="primary"
           type="submit"
         >
-          Login
+          Register
         </Button>
         <Link
           className={classes.link}
