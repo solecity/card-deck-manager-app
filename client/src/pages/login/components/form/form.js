@@ -27,10 +27,10 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = await fetchToken(loginData);
+    const res = await fetchToken(loginData);
 
-    if (token) {
-      dispatch(saveToken(token));
+    if (res) {
+      dispatch(saveToken(res.token));
     }
   };
 
