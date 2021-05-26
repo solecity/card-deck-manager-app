@@ -5,6 +5,12 @@ import { useHistory } from "react-router-dom";
 // external components
 import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 
+// hooks
+import { useAuth } from "../../hooks/useAuth";
+
+// utils
+import { getJWT } from "../../utils/jwt";
+
 // styles
 import useStyles from "./styles";
 
@@ -13,7 +19,21 @@ const NavBar = () => {
 
   const history = useHistory();
 
-  const isAuth = false;
+  const { logout } = useAuth();
+
+  let isAuth = false;
+
+  if (getJWT()) {
+    isAuth = true;
+  }
+
+  const handleLogout = () => {
+    isAuth = false;
+
+    logout();
+
+    history.push("/");
+  };
 
   return (
     <AppBar position="static" className={classes.root}>
@@ -23,28 +43,24 @@ const NavBar = () => {
         </Typography>
         {isAuth ? (
           <div>
+            <Button color="inherit" onClick={() => history.push("/cards")}>
+              Cards
+            </Button>
             <Button
               color="inherit"
               onClick={() => history.push("/collections")}
             >
               Collections
             </Button>
-            <Button color="inherit" onClick={() => history.push("/cards")}>
-              Cards
-            </Button>
             <Button color="inherit" onClick={() => history.push("/admin")}>
               Admin
             </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              logout
+            </Button>
           </div>
         ) : (
-          <div>
-            <Button color="inherit" onClick={() => history.push("/login")}>
-              Login
-            </Button>
-            <Button color="inherit" onClick={() => history.push("/register")}>
-              Register
-            </Button>
-          </div>
+          <></>
         )}
       </Toolbar>
     </AppBar>
