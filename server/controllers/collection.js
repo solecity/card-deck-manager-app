@@ -215,7 +215,7 @@ export const updateCollectionCards = async (req, res) => {
       }
     }
 
-    collection.cards = newCards;
+    collection.cards = [...new Set(newCards)];
 
     await collection.save();
 
