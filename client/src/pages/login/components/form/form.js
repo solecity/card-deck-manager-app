@@ -1,16 +1,12 @@
 // base
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
-// api
-import { fetchToken } from "../../../../services/auth";
-
-// reducers
-import { saveToken } from "../../../../reducers/auth";
 
 // external components
 import { Grid, TextField, Typography, Button, Link } from "@material-ui/core";
+
+// hooks
+import { useAuth } from "../../../../hooks/useAuth";
 
 // styles
 import useStyles from "./styles";
@@ -20,18 +16,14 @@ const Form = () => {
 
   const [loginData, setLoginData] = useState({ username: "", password: "" });
 
-  const history = useHistory();
+  const { login } = useAuth();
 
-  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetchToken(loginData);
-
-    if (res) {
-      dispatch(saveToken(res.token));
-    }
+    login(loginData);
   };
 
   return (
@@ -42,6 +34,7 @@ const Form = () => {
       <form noValidate onSubmit={handleSubmit}>
         <TextField
           className={classes.input}
+          required
           fullWidth
           variant="outlined"
           size="small"
@@ -54,6 +47,7 @@ const Form = () => {
         />
         <TextField
           className={classes.input}
+          required
           fullWidth
           variant="outlined"
           size="small"
