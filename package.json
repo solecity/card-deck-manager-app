@@ -1,0 +1,26 @@
+{
+  "name": "card-deck-manager-app",
+  "version": "1.0.0",
+  "description": "Project done in React for practice",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "nodemon": "^2.0.7"
+  },
+  "scripts": {
+    "server": "cd server && npm run start",
+    "client": "cd client && npm run start",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solecity/card-deck-manager-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solecity/card-deck-manager-app/issues"
+  },
+  "homepage": "https://github.com/solecity/card-deck-manager-app#readme"
+}
