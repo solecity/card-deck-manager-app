@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { Grid, TextField, Typography, Button, Link } from "@material-ui/core";
 
 // api
-import { create } from "../../../../services/user";
+import { createUser } from "../../../../services/user";
 
 //hooks
 import { useAuth } from "../../../../hooks/useAuth";
@@ -17,7 +17,7 @@ import useStyles from "./styles";
 const Form = () => {
   const classes = useStyles();
 
-  const [registerData, setRegisterData] = useState({
+  const [data, setData] = useState({
     username: "",
     name: "",
     password: ""
@@ -30,12 +30,12 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await create(registerData);
+    const res = await createUser(data);
 
     if (res) {
       login({
-        username: registerData.username,
-        password: registerData.password
+        username: data.username,
+        password: data.password
       });
     }
   };
@@ -54,10 +54,8 @@ const Form = () => {
           size="small"
           type="text"
           label="username"
-          value={registerData.username}
-          onChange={(e) =>
-            setRegisterData({ ...registerData, username: e.target.value })
-          }
+          value={data.username}
+          onChange={(e) => setData({ ...data, username: e.target.value })}
         />
         <TextField
           className={classes.input}
@@ -67,10 +65,8 @@ const Form = () => {
           size="small"
           type="text"
           label="name"
-          value={registerData.name}
-          onChange={(e) =>
-            setRegisterData({ ...registerData, name: e.target.value })
-          }
+          value={data.name}
+          onChange={(e) => setData({ ...data, name: e.target.value })}
         />
         <TextField
           className={classes.input}
@@ -80,10 +76,8 @@ const Form = () => {
           size="small"
           type="password"
           label="password"
-          value={registerData.password}
-          onChange={(e) =>
-            setRegisterData({ ...registerData, password: e.target.value })
-          }
+          value={data.password}
+          onChange={(e) => setData({ ...data, password: e.target.value })}
         />
         <Button
           className={classes.button}
