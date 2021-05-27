@@ -9,3 +9,13 @@ export const fetchToken = async ({ username, password }) => {
     throw error;
   }
 };
+
+export const getMe = async ({ id }) => {
+  try {
+    const res = await api().get(`/users/${id}`);
+
+    return res ? res.data : {};
+  } catch (error) {
+    throw error;
+  }
+};

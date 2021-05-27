@@ -1,16 +1,19 @@
+// libraries
 import axios from "axios";
-import { saveToken } from "../reducers/auth";
+
+// utils
+import { getJWT } from "../utils/jwt";
 
 const apiExport = () => {
   const api = axios.create({
     baseURL: `${process.env.REACT_APP_API_URL}`
   });
 
-  //   api.interceptors.request.use((config) => {
-  //     config.headers.authorization = `Bearer ${saveToken()}`;
+  api.interceptors.request.use((config) => {
+    config.headers.authorization = `Bearer ${getJWT()}`;
 
-  //     return config;
-  //   });
+    return config;
+  });
 
   return api;
 };
