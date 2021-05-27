@@ -3,25 +3,29 @@ import React from "react";
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
 // custom components
-import { Login, Register, Collections, Cards, Admin } from "./pages";
+import { Home, Login, Register, Collections, Cards, Admin } from "./pages";
 
-// utils
-import { getJWT } from "./utils/jwt";
+// hooks
+import { useAuth } from "./hooks/useAuth";
 
 const Routes = () => {
   const location = useLocation();
 
-  const token = getJWT();
+  const { _token } = useAuth();
 
   if (
-    !token &&
-    !(location.pathname === "/login" || location.pathname === "/register")
+    !_token &&
+    !(
+      location.pathname === "/" ||
+      location.pathname === "/login" ||
+      location.pathname === "/register"
+    )
   ) {
     return <Redirect to="/login" />;
   }
 
   if (
-    token &&
+    _token &&
     (location.pathname === "/login" || location.pathname === "/register")
   ) {
     return <Redirect to="/cards" />;
@@ -29,7 +33,7 @@ const Routes = () => {
 
   return (
     <Switch>
-      <Route exact from="/" render={() => <Cards />} />
+      <Route exact from="/" render={() => <Home />} />
       <Route exact from="/login" render={() => <Login />} />
       <Route exact from="/register" render={() => <Register />} />
       <Route exact from="/cards" render={() => <Cards />} />

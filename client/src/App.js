@@ -4,13 +4,12 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 // custom components
 import { NavBar } from "./components";
+
+// routes
 import Routes from "./routes";
 
 // context
 import { AuthProvider } from "./context/auth";
-
-// utils
-import history from "./utils/history";
 
 // styles
 import "./App.css";
@@ -19,7 +18,7 @@ const App = () => {
   return (
     <div className="App">
       <AuthProvider>
-        <Router history={history}>
+        <Router>
           <NavBar />
           <Routes />
         </Router>
