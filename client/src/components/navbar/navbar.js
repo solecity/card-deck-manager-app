@@ -8,8 +8,8 @@ import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 // hooks
 import { useAuth } from "../../hooks/useAuth";
 
-// utils
-import { getJWT } from "../../utils/jwt";
+// constants
+import { USER_TYPES } from "../../constants/general";
 
 // styles
 import useStyles from "./styles";
@@ -19,21 +19,13 @@ const NavBar = () => {
 
   const history = useHistory();
 
-  const { logout } = useAuth();
-
-  let isAuth = false;
-
-  if (getJWT()) {
-    isAuth = true;
-  }
+  const { logout, _token, userType } = useAuth();
 
   const handleLogout = () => {
-    isAuth = false;
-
     logout();
-
-    history.push("/");
   };
+
+  console.log(userType);
 
   return (
     <AppBar position="static" className={classes.root}>
@@ -41,8 +33,13 @@ const NavBar = () => {
         <Typography className={classes.title} variant="h5">
           Card Deck Manager
         </Typography>
-        {isAuth ? (
+        {Boolean(_token) ? (
           <div>
+            {userType === USER_TYPES.ADMIN && (
+              <Button color="inherit" onClick={() => history.push("/admin")}>
+                Admin
+              </Button>
+            )}
             <Button color="inherit" onClick={() => history.push("/cards")}>
               Cards
             </Button>
@@ -51,9 +48,6 @@ const NavBar = () => {
               onClick={() => history.push("/collections")}
             >
               Collections
-            </Button>
-            <Button color="inherit" onClick={() => history.push("/admin")}>
-              Admin
             </Button>
             <Button color="inherit" onClick={handleLogout}>
               logout
