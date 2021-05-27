@@ -14,27 +14,27 @@ import { Edit as EditIcon, Delete as DeleteIcon } from "@material-ui/icons";
 // styles
 import useStyles from "./styles";
 
-const Card = () => {
+const Card = ({ card, handleEdit, handleDelete }) => {
   const classes = useStyles();
 
   return (
     <MUICard className={classes.root}>
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
-          name
+          {card.name}
         </Typography>
         <Typography variant="body2" component="p">
-          description
+          {card.description}
         </Typography>
         <Typography variant="body2" component="p">
-          value
+          {card.value}
         </Typography>
       </CardContent>
       <CardActions>
-        <IconButton color="primary">
+        <IconButton color="primary" onClick={() => handleEdit(card._id)}>
           <EditIcon />
         </IconButton>
-        <IconButton color="primary">
+        <IconButton color="primary" onClick={() => handleDelete(card._id)}>
           <DeleteIcon />
         </IconButton>
       </CardActions>
