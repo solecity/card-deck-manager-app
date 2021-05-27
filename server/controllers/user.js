@@ -48,6 +48,8 @@ export const getUser = async (req, res) => {
 export const createUser = async (req, res) => {
   try {
     const { username } = req.body;
+    const userData = req.body;
+    const loggedUser = req.user;
 
     const user = await User.findOne({ username });
 
@@ -57,7 +59,11 @@ export const createUser = async (req, res) => {
         .json({ message: USER.CONFLIT_USERNAME });
     }
 
-    const data = new User(req.body);
+    if (!loggedUser || (loggedUser && loggedUser.type !== USER_TYPES.ADMIN)) {
+      userData.type = USER_TYPES.STANDARD;
+    }
+
+    const data = new User(userData);
 
     await data.save();
 
@@ -69,6 +75,40 @@ export const createUser = async (req, res) => {
       .json({ user: newUser, message: USER.CREATED });
   } catch (error) {
     return res.status(httpStatus.BAD_REQUEST).json(error);
+  }
+};
+
+export const updateUserInfo = async (req, res) => {
+  try {
+    const { id: _id } = req.params;
+    const { username, name, type } = req.body;
+    const loggedUser = req.user;
+
+    const user = await User.findById(_id);
+
+    if (!user) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    if (type && loggedUser.type !== USER_TYPES.ADMIN) {
+      return res
+        .status(httpStatus.FORBIDDEN)
+        .json({ message: GENERAL.UNAUTHORIZED });
+    }
+
+    user.username = username;
+    user.name = name;
+    user.type = type;
+
+    await user.save();
+
+    const updatedUser = user.toObject();
+
+    return res
+      .status(httpStatus.OK)
+      .json({ user: updatedUser, message: USER.UPDATED });
+  } catch (error) {
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 
