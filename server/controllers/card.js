@@ -15,7 +15,7 @@ const { Types, isValidObjectId } = mongoose;
 
 export const getCards = async (req, res) => {
   try {
-    const cards = await Card.find();
+    const cards = await Card.find().populate("user");
 
     return res.status(httpStatus.OK).json(cards);
   } catch (error) {
@@ -26,7 +26,9 @@ export const getCards = async (req, res) => {
 export const getUserCards = async (req, res) => {
   try {
     const loggedUser = req.user;
-    const cards = await Card.find({ "user._id": loggedUser._id });
+    const cards = await Card.find({ "user._id": loggedUser._id }).populate(
+      "user"
+    );
 
     return res.status(httpStatus.OK).json(cards);
   } catch (error) {
@@ -39,7 +41,7 @@ export const getCard = async (req, res) => {
     const { id: _id } = req.params;
     const loggedUser = req.user;
 
-    const card = await Card.findById(_id);
+    const card = await Card.findById(_id).populate("user");
 
     if (!card) {
       return res.status(httpStatus.NOT_FOUND).json({ message: CARD.NOT_FOUND });

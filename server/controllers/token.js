@@ -26,9 +26,13 @@ export const login = async (req, res) => {
 
     bcrypt.compare(password, user.password, (error, result) => {
       if (!error && result) {
-        const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
-          expiresIn: `${process.env.JWT_DURATION}h`
-        });
+        const token = jwt.sign(
+          { id: user._id, type: user.type },
+          process.env.JWT_KEY,
+          {
+            expiresIn: `${process.env.JWT_DURATION}h`
+          }
+        );
 
         return res.status(httpStatus.OK).json({ token, auth: true });
       } else {

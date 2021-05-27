@@ -17,14 +17,9 @@ const cardSchema = new Schema({
     default: 1
   },
   user: {
-    _id: {
-      type: Schema.Types.ObjectId,
-      required: true
-    },
-    username: {
-      type: String,
-      required: true
-    }
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "User"
   }
 });
 

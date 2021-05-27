@@ -6,8 +6,8 @@ import {
   getUsers,
   getUser,
   createUser,
+  updateUserInfo,
   updateUserPassword,
-  updateUserType,
   deleteUser
 } from "../controllers/user.js";
 
@@ -16,6 +16,7 @@ import { validateUser } from "../config/schemas/user.js";
 
 // middleware
 import { checkAuth } from "../middleware/checkAuth.js";
+import { checkAuthType } from "../middleware/checkAuthType.js";
 import { adminAuthorization } from "../middleware/adminAuthorization.js";
 import { validateId } from "../middleware/validateId.js";
 import { validateSchema } from "../middleware/validateSchema.js";
@@ -26,23 +27,22 @@ router.get("/", checkAuth, adminAuthorization, getUsers);
 
 router.get("/:id", checkAuth, validateId, getUser);
 
-router.post("/", validateSchema(validateUser), createUser);
+router.post("/", checkAuthType, validateSchema(validateUser), createUser);
 
 router.patch(
   "/:id",
   checkAuth,
   validateSchema(validateUser),
   validateId,
-  updateUserPassword
+  updateUserInfo
 );
 
 router.patch(
-  "/admin/:id",
+  "/password/:id",
   checkAuth,
-  adminAuthorization,
   validateSchema(validateUser),
   validateId,
-  updateUserType
+  updateUserPassword
 );
 
 router.delete("/:id", checkAuth, adminAuthorization, validateId, deleteUser);
