@@ -8,7 +8,13 @@ import { Grid, TextField, Typography, Button } from "@material-ui/core";
 import { Card } from "./components";
 
 // api
-import { getUserCards, createCard, deleteCard } from "../../services/card";
+import {
+  getUserCards,
+  getCard,
+  createCard,
+  updateCard,
+  deleteCard
+} from "../../services/card";
 
 // styles
 import useStyles from "./styles";
@@ -43,8 +49,24 @@ const Cards = () => {
     }
   };
 
-  const handleEdit = () => {
-    /// edit card
+  const handleEdit = async (id) => {
+    const card = await getCard(id, data);
+
+    if (card) {
+      setData({
+        name: card.name,
+        description: card.description,
+        value: card.value
+      });
+    }
+
+    const res = await updateCard(id, data);
+
+    if (res) {
+      setData({ name: "", description: "", value: "" });
+
+      getData();
+    }
   };
 
   const handleDelete = async (id) => {

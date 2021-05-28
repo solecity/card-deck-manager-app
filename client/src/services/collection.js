@@ -1,5 +1,15 @@
 import api from "./api";
 
+export const getCollections = async () => {
+  try {
+    const res = await api().get("/collections");
+
+    return res ? res.data : {};
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getUserCollections = async (payload) => {
   try {
     const res = await api().get("/collections/user", payload);

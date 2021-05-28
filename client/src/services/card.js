@@ -20,9 +20,29 @@ export const getUserCards = async (payload) => {
   }
 };
 
+export const getCard = async (id) => {
+  try {
+    const res = await api().get(`/cards/${id}`);
+
+    return res ? res.data : {};
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const createCard = async (payload) => {
   try {
     const res = await api().post("/cards", payload);
+
+    return res ? res.data : {};
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateCard = async (id, payload) => {
+  try {
+    const res = await api().put(`/cards/${id}`, payload);
 
     return res ? res.data : {};
   } catch (error) {

@@ -26,9 +26,7 @@ export const getCards = async (req, res) => {
 export const getUserCards = async (req, res) => {
   try {
     const loggedUser = req.user;
-    const cards = await Card.find({ "user._id": loggedUser._id }).populate(
-      "user"
-    );
+    const cards = await Card.find({ user: loggedUser._id }).populate("user");
 
     return res.status(httpStatus.OK).json(cards);
   } catch (error) {

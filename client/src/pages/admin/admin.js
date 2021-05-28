@@ -19,6 +19,8 @@ import { Edit as EditIcon, Delete as DeleteIcon } from "@material-ui/icons";
 
 // api
 import { getUsers, createUser, deleteUser } from "../../services/user";
+import { getCards } from "../../services/card";
+import { getCollections } from "../../services/collection";
 
 // styles
 import useStyles from "./styles";
@@ -33,12 +35,26 @@ const Admin = () => {
     type: 2
   });
   const [users, setUsers] = useState([]);
+  const [cards, setCards] = useState([]);
+  const [collections, setCollections] = useState([]);
 
   const getData = async () => {
-    const res = await getUsers();
+    const [users, cards, collections] = await Promise.all([
+      getUsers(),
+      getCards(),
+      getCollections()
+    ]);
 
-    if (res) {
-      setUsers(res);
+    if (users) {
+      setUsers(users);
+    }
+
+    if (cards) {
+      setCards(cards);
+    }
+
+    if (collections) {
+      setCollections(collections);
     }
   };
 
@@ -81,6 +97,7 @@ const Admin = () => {
           <TextField
             className={classes.input}
             required
+            fullWidth
             variant="outlined"
             size="small"
             type="text"
@@ -91,6 +108,7 @@ const Admin = () => {
           <TextField
             className={classes.input}
             required
+            fullWidth
             variant="outlined"
             size="small"
             type="text"
@@ -101,6 +119,7 @@ const Admin = () => {
           <TextField
             className={classes.input}
             required
+            fullWidth
             variant="outlined"
             size="small"
             type="password"
@@ -110,6 +129,7 @@ const Admin = () => {
           />
           <Select
             native
+            fullWidth
             variant="outlined"
             value={data.type}
             onChange={(e) => setData({ ...data, type: e.target.value })}
@@ -151,6 +171,84 @@ const Admin = () => {
                   <IconButton
                     color="primary"
                     onClick={() => handleDelete(user._id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Grid>
+      <Grid container item xs={8} className={classes.table}>
+        <Typography variant="h6">Cards</Typography>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell align="center">User</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Description</TableCell>
+              <TableCell align="center">Value</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {cards.map((card, i) => (
+              <TableRow>
+                <TableCell>{i + 1}</TableCell>
+                <TableCell align="center">{card.user}</TableCell>
+                <TableCell align="center">{card.name}</TableCell>
+                <TableCell align="center">{card.description}</TableCell>
+                <TableCell align="center">{card.value}</TableCell>
+                <TableCell>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleEdit(card._id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleDelete(card._id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Grid>
+      <Grid container item xs={8} className={classes.table}>
+        <Typography variant="h6">Collections</Typography>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell align="center">User</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Total Cards</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {collections.map((collection, i) => (
+              <TableRow>
+                <TableCell>{i + 1}</TableCell>
+                <TableCell align="center">{collection.user}</TableCell>
+                <TableCell align="center">{collection.name}</TableCell>
+                <TableCell align="center">{collection.cards.length}</TableCell>
+                <TableCell>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleEdit(collection._id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleDelete(collection._id)}
                   >
                     <DeleteIcon />
                   </IconButton>
