@@ -2,18 +2,15 @@
 import React, { useState, useEffect } from "react";
 
 // external components
-import { Grid, TextField, Typography, Button } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 
 // custom components
 import { Header } from "../../components";
-import { Card } from "./components";
+import { Form, Card } from "./components";
 
 // api
-import {
-  getUserCollections,
-  createCollection,
-  deleteCollection
-} from "../../services/collection";
+import { getUserCollections } from "../../services/collection";
 
 // styles
 import useStyles from "./styles";
@@ -21,7 +18,6 @@ import useStyles from "./styles";
 const Collections = () => {
   const classes = useStyles();
 
-  const [data, setData] = useState({ name: "" });
   const [collections, setCollections] = useState([]);
 
   const getData = async () => {
@@ -32,67 +28,25 @@ const Collections = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const res = await createCollection(data);
-
-    if (res) {
-      setData({ name: "" });
-
-      getData();
-    }
-  };
-
-  const handleEdit = () => {
-    /// edit collection
-  };
-
-  const handleDelete = async (id) => {
-    const res = await deleteCollection(id);
-
-    if (res) {
-      getData();
-    }
-  };
-
   useEffect(() => {
     getData();
   }, []);
 
   return (
-    <Grid container justify="center" className={classes.root}>
+    <Container>
       <Header title="Collections" />
-      <Grid item xs={8}>
-        <Typography variant="h6">Add collection</Typography>
-        <form noValidate onSubmit={handleSubmit}>
-          <TextField
-            required
-            variant="outlined"
-            size="small"
-            type="text"
-            label="name"
-            value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
-          />
-          <Button variant="contained" color="primary" type="submit">
-            Add
-          </Button>
-        </form>
+      <Grid container justify="center">
+        <Form getData={getData} />
       </Grid>
-      <Grid container item spacing={2} xs={8} className={classes.list}>
+      <Grid container spacing={2} className={classes.list}>
         {Boolean(collections.length) &&
           collections.map((collection) => (
-            <Grid item xs={4} key={collection._id}>
-              <Card
-                collection={collection}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-              />
+            <Grid item xs={2} key={collection._id}>
+              <Card collection={collection} getData={getData} />
             </Grid>
           ))}
       </Grid>
-    </Grid>
+    </Container>
   );
 };
 

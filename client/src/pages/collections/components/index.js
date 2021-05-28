@@ -1,3 +1,4 @@
+import Form from "./form/form";
 import Card from "./card/card";
 
-export { Card };
+export { Form, Card };
