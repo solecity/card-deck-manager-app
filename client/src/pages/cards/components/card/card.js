@@ -1,38 +1,62 @@
 // base
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 // external components
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import { BiEditAlt, BiTrashAlt } from "react-icons/bi";
+import Box from "@material-ui/core/Box";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import { BiDiamond, BiEditAlt, BiTrashAlt } from "react-icons/bi";
+
+// api
+import { deleteCard } from "../../../../services/card";
 
 // styles
 import useStyles from "./styles";
 
-const CardComp = ({ card, handleEdit, handleDelete }) => {
+const CardComp = ({ card, getData }) => {
   const classes = useStyles();
 
+  const history = useHistory();
+
+  const handleEdit = async (id) => {
+    history.push({ pathname: "./cardDetails", state: { id } });
+  };
+
+  const handleDelete = async (id) => {
+    const res = await deleteCard(id);
+
+    if (res) {
+      getData();
+    }
+  };
+
   return (
-    <Card className={classes.root}>
-      <Card.Body>
-        <Card.Title>{card.name}</Card.Title>
-        <Card.Text>{card.description}</Card.Text>
-        <Card.Text>{card.value}</Card.Text>
-        <Button
-          className={classes.edit}
-          variant="light"
-          onClick={() => handleEdit(card._id)}
-        >
+    <Card className={classes.card}>
+      <CardContent>
+        <Typography noWrap gutterBottom variant="h5" component="h2">
+          {card.name}
+        </Typography>
+        <Box my={2} overflow="auto" className={classes.box}>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {card.description}
+          </Typography>
+        </Box>
+        <Typography variant="body2" component="p" className={classes.value}>
+          <BiDiamond className={classes.diamond} /> {card.value}
+        </Typography>
+      </CardContent>
+      <CardActions className={classes.buttons}>
+        <IconButton size="small" onClick={() => handleEdit(card._id)}>
           <BiEditAlt />
-        </Button>
-        <Button
-          className={classes.delete}
-          variant="light"
-          onClick={() => handleDelete(card._id)}
-        >
+        </IconButton>
+        <IconButton size="small" onClick={() => handleDelete(card._id)}>
           <BiTrashAlt />
-        </Button>
-      </Card.Body>
+        </IconButton>
+      </CardActions>
     </Card>
   );
 };

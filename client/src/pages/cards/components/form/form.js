@@ -1,63 +1,98 @@
 // base
 import React, { useState } from "react";
 
+// external components
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+
 // api
 import { createCard } from "../../../../services/card";
-
-// external components
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 
 // styles
 import useStyles from "./styles";
 
-const CardForm = ({ handleSubmit, data, setData }) => {
+const Form = ({ getData }) => {
   const classes = useStyles();
 
+  const [data, setData] = useState({
+    name: "",
+    description: "",
+    value: ""
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const res = await createCard(data);
+
+    if (res) {
+      setData({ name: "", description: "", value: "" });
+
+      getData();
+    }
+  };
+
   return (
-    <Container fluid className={classes.root}>
-      <Row>
-        <Form onSubmit={handleSubmit}>
-          <Row>
-            <Form.Group as={Col}>
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                defaultValue={data.name}
-                onChange={(e) => setData({ ...data, name: e.target.value })}
-              />
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label>Value</Form.Label>
-              <Form.Control
-                type="number"
-                defaultValue={data.value}
-                onChange={(e) => setData({ ...data, value: e.target.value })}
-              />
-            </Form.Group>
-          </Row>
-          <Form.Group>
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              defaultValue={data.description}
+    <Container maxWidth="sm">
+      <Typography variant="h6">Add card</Typography>
+      <form noValidate onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="name"
+              type="text"
+              variant="outlined"
+              size="small"
+              required
+              fullWidth
+              value={data.name}
+              onChange={(e) => setData({ ...data, name: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="value"
+              type="number"
+              variant="outlined"
+              size="small"
+              required
+              fullWidth
+              InputProps={{ inputProps: { min: 0 } }}
+              value={data.value}
+              onChange={(e) => setData({ ...data, value: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="description"
+              variant="outlined"
+              size="small"
+              required
+              fullWidth
+              multiline
+              rows={4}
+              value={data.description}
               onChange={(e) =>
                 setData({ ...data, description: e.target.value })
               }
             />
-          </Form.Group>
-
-          <Button variant="primary" type="submit">
-            Save
-          </Button>
-        </Form>
-      </Row>
+          </Grid>
+        </Grid>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          type="submit"
+          className={classes.button}
+        >
+          Add
+        </Button>
+      </form>
     </Container>
   );
 };
 
-export default CardForm;
+export default Form;

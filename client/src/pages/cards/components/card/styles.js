@@ -1,16 +1,20 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles(() => ({
-  root: {
-    height: 250
+  card: {
+    height: 280
   },
-  edit: {
-    backgroundColor: "transparent",
-    marginRight: "1rem",
-    color: "#524694"
+  box: {
+    height: 120
   },
-  delete: {
-    backgroundColor: "transparent",
-    color: "#af2330"
+  value: {
+    marginTop: "1rem"
+  },
+  diamond: {
+    marginTop: -4
+  },
+  buttons: {
+    marginRight: ".2rem",
+    justifyContent: "flex-end"
   }
 }));
