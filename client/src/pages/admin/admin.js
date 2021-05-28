@@ -84,7 +84,7 @@ const Admin = () => {
 
   useEffect(() => {
     getData();
-  }, [users]);
+  }, []);
 
   return (
     <Grid container justify="center" className={classes.root}>
@@ -197,7 +197,7 @@ const Admin = () => {
             {cards.map((card, i) => (
               <TableRow>
                 <TableCell>{i + 1}</TableCell>
-                <TableCell align="center">{card.user}</TableCell>
+                <TableCell align="center">{card.user.username}</TableCell>
                 <TableCell align="center">{card.name}</TableCell>
                 <TableCell align="center">{card.description}</TableCell>
                 <TableCell align="center">{card.value}</TableCell>
@@ -236,7 +236,7 @@ const Admin = () => {
             {collections.map((collection, i) => (
               <TableRow>
                 <TableCell>{i + 1}</TableCell>
-                <TableCell align="center">{collection.user}</TableCell>
+                <TableCell align="center">{collection.user.username}</TableCell>
                 <TableCell align="center">{collection.name}</TableCell>
                 <TableCell align="center">{collection.cards.length}</TableCell>
                 <TableCell>
