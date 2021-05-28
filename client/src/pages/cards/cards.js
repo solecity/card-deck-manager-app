@@ -1,28 +1,24 @@
 // base
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 // external components
-import { Grid, TextField, Typography } from "@material-ui/core";
-import Button from "react-bootstrap/Button";
+import { Grid, TextField, Typography, Button } from "@material-ui/core";
 
 // custom components
 import { Header } from "../../components";
 import { Card } from "./components";
 
 // api
-import {
-  getUserCards,
-  getCard,
-  createCard,
-  updateCard,
-  deleteCard
-} from "../../services/card";
+import { getUserCards, createCard, deleteCard } from "../../services/card";
 
 // styles
 import useStyles from "./styles";
 
 const Cards = () => {
   const classes = useStyles();
+
+  const history = useHistory();
 
   const [data, setData] = useState({
     name: "",
@@ -52,23 +48,7 @@ const Cards = () => {
   };
 
   const handleEdit = async (id) => {
-    const card = await getCard(id, data);
-
-    if (card) {
-      setData({
-        name: card.name,
-        description: card.description,
-        value: card.value
-      });
-    }
-
-    const res = await updateCard(id, data);
-
-    if (res) {
-      setData({ name: "", description: "", value: "" });
-
-      getData();
-    }
+    history.push({ pathname: "./cardDetails", state: { id } });
   };
 
   const handleDelete = async (id) => {
@@ -88,7 +68,7 @@ const Cards = () => {
       <Header title="Cards" />
       <Grid item xs={8}>
         <Typography variant="h6">Add card</Typography>
-        <form noValidate onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
             required
@@ -120,7 +100,7 @@ const Cards = () => {
             value={data.value}
             onChange={(e) => setData({ ...data, value: e.target.value })}
           />
-          <Button variant="primary" type="submit">
+          <Button fullWidth variant="contained" color="primary" type="submit">
             Add
           </Button>
         </form>

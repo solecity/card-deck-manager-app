@@ -2,44 +2,39 @@
 import React from "react";
 
 // external components
-import {
-  Card as MUICard,
-  CardContent,
-  CardActions,
-  Typography,
-  IconButton
-} from "@material-ui/core";
-import { Edit as EditIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import { BiEditAlt, BiTrashAlt } from "react-icons/bi";
 
 // styles
 import useStyles from "./styles";
 
-const Card = ({ card, handleEdit, handleDelete }) => {
+const CardComp = ({ card, handleEdit, handleDelete }) => {
   const classes = useStyles();
 
   return (
-    <MUICard className={classes.root}>
-      <CardContent>
-        <Typography color="textSecondary" gutterBottom>
-          {card.name}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {card.description}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {card.value}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <IconButton color="primary" onClick={() => handleEdit(card._id)}>
-          <EditIcon />
-        </IconButton>
-        <IconButton color="primary" onClick={() => handleDelete(card._id)}>
-          <DeleteIcon />
-        </IconButton>
-      </CardActions>
-    </MUICard>
+    <Card className={classes.root}>
+      <Card.Body>
+        <Card.Title>{card.name}</Card.Title>
+        <Card.Text>{card.description}</Card.Text>
+        <Card.Text>{card.value}</Card.Text>
+        <Button
+          className={classes.edit}
+          variant="light"
+          onClick={() => handleEdit(card._id)}
+        >
+          <BiEditAlt />
+        </Button>
+        <Button
+          className={classes.delete}
+          variant="light"
+          onClick={() => handleDelete(card._id)}
+        >
+          <BiTrashAlt />
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 
-export default Card;
+export default CardComp;
