@@ -1,7 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles(() => ({
-  root: {
-    width: 200
+  card: {
+    height: 135
+  },
+  buttons: {
+    marginRight: ".2rem",
+    justifyContent: "flex-end"
   }
 }));

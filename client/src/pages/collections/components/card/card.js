@@ -1,45 +1,58 @@
 // base
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 // external components
-import {
-  Card as MUICard,
-  CardContent,
-  CardActions,
-  Typography,
-  IconButton
-} from "@material-ui/core";
-import { Edit as EditIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import { BiEditAlt, BiTrashAlt } from "react-icons/bi";
+
+// api
+import { deleteCollection } from "../../../../services/collection";
 
 // styles
 import useStyles from "./styles";
 
-const Card = ({ collection, handleEdit, handleDelete }) => {
+const CardComp = ({ collection, getData }) => {
   const classes = useStyles();
 
+  const history = useHistory();
+
+  const handleEdit = async (id) => {
+    history.push({ pathname: "./collectionDetails", state: { id } });
+  };
+
+  const handleDelete = async (id) => {
+    const res = await deleteCollection(id);
+
+    if (res) {
+      getData();
+    }
+  };
+
   return (
-    <MUICard className={classes.root}>
+    <Card className={classes.card}>
       <CardContent>
-        <Typography color="textSecondary" gutterBottom>
+        <Typography noWrap gutterBottom variant="h5" component="h2">
           {collection.name}
         </Typography>
-        <Typography variant="body2" component="p">
+        <Typography variant="body2" color="textSecondary" component="p">
           Cards: {collection.cards.length}
         </Typography>
       </CardContent>
-      <CardActions>
-        <IconButton color="primary" onClick={() => handleEdit(collection._id)}>
-          <EditIcon />
+      <CardActions className={classes.buttons}>
+        <IconButton size="small" onClick={() => handleEdit(collection._id)}>
+          <BiEditAlt />
         </IconButton>
-        <IconButton
-          color="primary"
-          onClick={() => handleDelete(collection._id)}
-        >
-          <DeleteIcon />
+        <IconButton size="small" onClick={() => handleDelete(collection._id)}>
+          <BiTrashAlt />
         </IconButton>
       </CardActions>
-    </MUICard>
+    </Card>
   );
 };
 
-export default Card;
+export default CardComp;
