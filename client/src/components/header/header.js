@@ -2,18 +2,18 @@
 import React from "react";
 
 // external components
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+
+// styles
+import useStyles from "./styles.js";
 
 const Header = ({ title }) => {
+  const classes = useStyles();
+
   return (
-    <Container fluid>
-      <Row>
-        <Col>
-          <h1>{title}</h1>
-        </Col>
-      </Row>
+    <Container className={classes.root}>
+      <Typography variant="h4">{title}</Typography>
     </Container>
   );
 };
