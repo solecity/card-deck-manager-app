@@ -25,8 +25,6 @@ const NavBar = () => {
     logout();
   };
 
-  console.log(userType);
-
   return (
     <AppBar position="static" className={classes.root}>
       <Toolbar>

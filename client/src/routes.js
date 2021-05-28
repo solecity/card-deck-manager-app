@@ -3,7 +3,15 @@ import React from "react";
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
 // custom components
-import { Home, Login, Register, Collections, Cards, Admin } from "./pages";
+import {
+  Home,
+  Login,
+  Register,
+  Cards,
+  CardDetails,
+  Collections,
+  Admin
+} from "./pages";
 
 // hooks
 import { useAuth } from "./hooks/useAuth";
@@ -37,6 +45,7 @@ const Routes = () => {
       <Route exact from="/login" render={() => <Login />} />
       <Route exact from="/register" render={() => <Register />} />
       <Route exact from="/cards" render={() => <Cards />} />
+      <Route exact from="/cardDetails" render={() => <CardDetails />} />
       <Route exact from="/collections" render={() => <Collections />} />
       <Route exact from="/admin" render={() => <Admin />} />
     </Switch>
