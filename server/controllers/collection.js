@@ -15,7 +15,7 @@ const { Types, isValidObjectId } = mongoose;
 
 export const getCollections = async (req, res) => {
   try {
-    const collections = await Collection.find();
+    const collections = await Collection.find().populate("user");
 
     return res.status(httpStatus.OK).json(collections);
   } catch (error) {
@@ -26,7 +26,10 @@ export const getCollections = async (req, res) => {
 export const getUserCollections = async (req, res) => {
   try {
     const loggedUser = req.user;
-    const collections = await Collection.find({ "user._id": loggedUser._id });
+    s;
+    const collections = await Collection.find({
+      user: loggedUser._id
+    }).populate("user");
 
     return res.status(httpStatus.OK).json(collections);
   } catch (error) {
