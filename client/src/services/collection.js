@@ -20,9 +20,39 @@ export const getUserCollections = async (payload) => {
   }
 };
 
+export const getCollection = async (id) => {
+  try {
+    const res = await api().get(`/collections/${id}`);
+
+    return res ? res.data : {};
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const createCollection = async (payload) => {
   try {
     const res = await api().post("/collections", payload);
+
+    return res ? res.data : {};
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateCollection = async (id, payload) => {
+  try {
+    const res = await api().put(`/collections/${id}`, payload);
+
+    return res ? res.data : {};
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateCollectionCards = async (id, payload) => {
+  try {
+    const res = await api().patch(`/collections/${id}`, payload);
 
     return res ? res.data : {};
   } catch (error) {

@@ -26,7 +26,7 @@ export const getCollections = async (req, res) => {
 export const getUserCollections = async (req, res) => {
   try {
     const loggedUser = req.user;
-    s;
+
     const collections = await Collection.find({
       user: loggedUser._id
     }).populate("user");
