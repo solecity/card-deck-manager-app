@@ -2,9 +2,11 @@
 import React, { useState, useEffect } from "react";
 
 // external components
-import { Grid, TextField, Typography, Button } from "@material-ui/core";
+import { Grid, TextField, Typography } from "@material-ui/core";
+import Button from "react-bootstrap/Button";
 
 // custom components
+import { Header } from "../../components";
 import { Card } from "./components";
 
 // api
@@ -79,13 +81,11 @@ const Cards = () => {
 
   useEffect(() => {
     getData();
-  }, [cards]);
+  }, []);
 
   return (
     <Grid container justify="center" className={classes.root}>
-      <Grid item xs={12} className={classes.title}>
-        <Typography variant="h4">Cards</Typography>
-      </Grid>
+      <Header title="Cards" />
       <Grid item xs={8}>
         <Typography variant="h6">Add card</Typography>
         <form noValidate onSubmit={handleSubmit}>
@@ -120,7 +120,7 @@ const Cards = () => {
             value={data.value}
             onChange={(e) => setData({ ...data, value: e.target.value })}
           />
-          <Button fullWidth variant="contained" color="primary" type="submit">
+          <Button variant="primary" type="submit">
             Add
           </Button>
         </form>

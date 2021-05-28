@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, TextField, Typography, Button } from "@material-ui/core";
 
 // custom components
+import { Header } from "../../components";
 import { Card } from "./components";
 
 // api
@@ -61,9 +62,7 @@ const Collections = () => {
 
   return (
     <Grid container justify="center" className={classes.root}>
-      <Grid item xs={12} className={classes.title}>
-        <Typography variant="h4">Collections</Typography>
-      </Grid>
+      <Header title="Collections" />
       <Grid item xs={8}>
         <Typography variant="h6">Add collection</Typography>
         <form noValidate onSubmit={handleSubmit}>
