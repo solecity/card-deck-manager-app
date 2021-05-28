@@ -10,16 +10,20 @@ import {
   Cards,
   CardDetails,
   Collections,
+  CollectionDetails,
   Admin
 } from "./pages";
 
 // hooks
 import { useAuth } from "./hooks/useAuth";
 
+// constants
+import { USER_TYPES } from "./constants/general";
+
 const Routes = () => {
   const location = useLocation();
 
-  const { _token } = useAuth();
+  const { _token, userType } = useAuth();
 
   if (
     !_token &&
@@ -39,6 +43,10 @@ const Routes = () => {
     return <Redirect to="/cards" />;
   }
 
+  if (userType !== USER_TYPES.ADMIN && location.pathname === "/admin") {
+    return <Redirect to="/cards" />;
+  }
+
   return (
     <Switch>
       <Route exact from="/" render={() => <Home />} />
@@ -47,6 +55,11 @@ const Routes = () => {
       <Route exact from="/cards" render={() => <Cards />} />
       <Route exact from="/cardDetails" render={() => <CardDetails />} />
       <Route exact from="/collections" render={() => <Collections />} />
+      <Route
+        exact
+        from="/collectionDetails"
+        render={() => <CollectionDetails />}
+      />
       <Route exact from="/admin" render={() => <Admin />} />
     </Switch>
   );
