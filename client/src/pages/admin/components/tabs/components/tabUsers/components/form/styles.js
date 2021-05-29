@@ -1,10 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
-  root: {
-    marginTop: theme.spacing(3)
+  form: {
+    marginTop: theme.spacing(2)
   },
-  table: {
-    marginTop: "4rem"
+  button: {
+    marginTop: theme.spacing(2)
   }
 }));

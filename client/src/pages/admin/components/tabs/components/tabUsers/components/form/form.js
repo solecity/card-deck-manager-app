@@ -5,8 +5,12 @@ import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+
+// custom components
+import { SelectInput } from "../../../../../../../../components";
 
 // api
 import { createUser } from "../../../../../../../../services/user";
@@ -21,7 +25,7 @@ const Form = ({ getData }) => {
     username: "",
     name: "",
     password: "",
-    type: 2
+    type: 0
   });
 
   const handleSubmit = async (e) => {
@@ -30,60 +34,78 @@ const Form = ({ getData }) => {
     const res = await createUser(data);
 
     if (res) {
-      setData({ username: "", name: "", password: "", type: 2 });
+      setData({ username: "", name: "", password: "", type: 0 });
 
       getData();
     }
   };
-
   return (
     <Grid item xs={8}>
       <Typography variant="h6">Add user</Typography>
-      <form noValidate onSubmit={handleSubmit}>
-        <TextField
-          className={classes.input}
-          required
+      <form noValidate onSubmit={handleSubmit} className={classes.form}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              className={classes.input}
+              required
+              fullWidth
+              variant="outlined"
+              size="small"
+              type="text"
+              label="username"
+              value={data.username}
+              onChange={(e) => setData({ ...data, username: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              className={classes.input}
+              required
+              fullWidth
+              variant="outlined"
+              size="small"
+              type="text"
+              label="name"
+              value={data.name}
+              onChange={(e) => setData({ ...data, name: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              className={classes.input}
+              required
+              fullWidth
+              variant="outlined"
+              size="small"
+              type="password"
+              label="password"
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Select
+              fullWidth
+              variant="outlined"
+              input={<SelectInput />}
+              value={data.type}
+              onChange={(e) => setData({ ...data, type: e.target.value })}
+            >
+              <MenuItem value={0} disabled>
+                type
+              </MenuItem>
+              <MenuItem value={1}>Admin</MenuItem>
+              <MenuItem value={2}>Standard</MenuItem>
+            </Select>
+          </Grid>
+        </Grid>
+        <Button
           fullWidth
-          variant="outlined"
-          size="small"
-          type="text"
-          label="username"
-          value={data.username}
-          onChange={(e) => setData({ ...data, username: e.target.value })}
-        />
-        <TextField
-          className={classes.input}
-          required
-          fullWidth
-          variant="outlined"
-          size="small"
-          type="text"
-          label="name"
-          value={data.name}
-          onChange={(e) => setData({ ...data, name: e.target.value })}
-        />
-        <TextField
-          className={classes.input}
-          required
-          fullWidth
-          variant="outlined"
-          size="small"
-          type="password"
-          label="password"
-          value={data.password}
-          onChange={(e) => setData({ ...data, password: e.target.value })}
-        />
-        <Select
-          native
-          fullWidth
-          variant="outlined"
-          value={data.type}
-          onChange={(e) => setData({ ...data, type: e.target.value })}
+          variant="contained"
+          color="primary"
+          type="submit"
+          className={classes.button}
         >
-          <option value={1}>Admin</option>
-          <option value={2}>Standard</option>
-        </Select>
-        <Button fullWidth variant="contained" color="primary" type="submit">
           Add
         </Button>
       </form>
