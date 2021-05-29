@@ -5,6 +5,6 @@ export default makeStyles((theme) => ({
     marginTop: "5rem"
   },
   button: {
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(2)
   }
 }));
