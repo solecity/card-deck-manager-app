@@ -16,8 +16,10 @@ const TableComp = ({ fields, data, handleEdit, handleDelete }) => {
       <TableHead>
         <TableRow>
           <TableCell>#</TableCell>
-          {fields.map((field) => (
-            <TableCell align="center">{field.label}</TableCell>
+          {fields.map((field, i) => (
+            <TableCell key={i} align="center">
+              {field.label}
+            </TableCell>
           ))}
           <TableCell align="center">Actions</TableCell>
         </TableRow>
@@ -29,15 +31,21 @@ const TableComp = ({ fields, data, handleEdit, handleDelete }) => {
     return (
       <TableBody>
         {data.map((el, i) => (
-          <TableRow>
+          <TableRow key={i}>
             <TableCell>{i + 1}</TableCell>
-            {fields.map((field) =>
+            {fields.map((field, j) =>
               field.key === "user" ? (
-                <TableCell align="center">{el["user"][field.value]}</TableCell>
+                <TableCell key={j} align="center">
+                  {el["user"][field.value]}
+                </TableCell>
               ) : field.key === "cards" ? (
-                <TableCell align="center">{el[field.value].length}</TableCell>
+                <TableCell key={j} align="center">
+                  {el[field.value].length}
+                </TableCell>
               ) : (
-                <TableCell align="center">{el[field.value]}</TableCell>
+                <TableCell key={j} align="center">
+                  {el[field.value]}
+                </TableCell>
               )
             )}
             <TableCell align="center">
