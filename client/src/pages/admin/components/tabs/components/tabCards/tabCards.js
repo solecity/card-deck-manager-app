@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 
 // custom components
 import { Table } from "../../../../../../components";
+import { Form } from "./components";
 
 // api
 import { getCards, deleteCard } from "../../../../../../services/card";
@@ -51,6 +52,7 @@ const TabCards = () => {
 
   return (
     <Grid container justify="center" className={classes.root}>
+      <Form getData={getData} />
       <Grid item xs={10} className={classes.table}>
         <Table
           fields={fields}
