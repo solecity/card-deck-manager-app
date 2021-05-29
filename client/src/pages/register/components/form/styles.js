@@ -1,17 +1,15 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   root: {
     width: "80%"
   },
-  title: {
-    paddingBottom: "1.8rem"
-  },
-  input: {
-    marginBottom: "1.5rem"
+  form: {
+    marginTop: theme.spacing(2)
   },
   button: {
-    marginBottom: "1rem"
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   link: {
     color: "#668cff"

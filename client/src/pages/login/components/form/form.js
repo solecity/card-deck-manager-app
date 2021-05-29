@@ -28,42 +28,46 @@ const Form = () => {
 
   return (
     <Grid item xs={6}>
-      <Typography className={classes.title} variant="h4">
-        Login
-      </Typography>
-      <form noValidate onSubmit={handleSubmit}>
-        <TextField
-          className={classes.input}
-          required
-          fullWidth
-          variant="outlined"
-          size="small"
-          type="text"
-          label="username"
-          value={loginData.username}
-          onChange={(e) =>
-            setLoginData({ ...loginData, username: e.target.value })
-          }
-        />
-        <TextField
-          className={classes.input}
-          required
-          fullWidth
-          variant="outlined"
-          size="small"
-          type="password"
-          label="password"
-          value={loginData.password}
-          onChange={(e) =>
-            setLoginData({ ...loginData, password: e.target.value })
-          }
-        />
+      <Typography variant="h4">Login</Typography>
+      <form noValidate onSubmit={handleSubmit} className={classes.form}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              className={classes.input}
+              required
+              fullWidth
+              variant="outlined"
+              size="small"
+              type="text"
+              label="username"
+              value={loginData.username}
+              onChange={(e) =>
+                setLoginData({ ...loginData, username: e.target.value })
+              }
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              className={classes.input}
+              required
+              fullWidth
+              variant="outlined"
+              size="small"
+              type="password"
+              label="password"
+              value={loginData.password}
+              onChange={(e) =>
+                setLoginData({ ...loginData, password: e.target.value })
+              }
+            />
+          </Grid>
+        </Grid>
         <Button
-          className={classes.button}
           fullWidth
           variant="contained"
           color="primary"
           type="submit"
+          className={classes.button}
         >
           Login
         </Button>

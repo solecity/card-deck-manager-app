@@ -45,46 +45,54 @@ const Form = () => {
       <Typography className={classes.title} variant="h4">
         Register
       </Typography>
-      <form noValidate onSubmit={handleSubmit}>
-        <TextField
-          className={classes.input}
-          required
-          fullWidth
-          variant="outlined"
-          size="small"
-          type="text"
-          label="username"
-          value={data.username}
-          onChange={(e) => setData({ ...data, username: e.target.value })}
-        />
-        <TextField
-          className={classes.input}
-          required
-          fullWidth
-          variant="outlined"
-          size="small"
-          type="text"
-          label="name"
-          value={data.name}
-          onChange={(e) => setData({ ...data, name: e.target.value })}
-        />
-        <TextField
-          className={classes.input}
-          required
-          fullWidth
-          variant="outlined"
-          size="small"
-          type="password"
-          label="password"
-          value={data.password}
-          onChange={(e) => setData({ ...data, password: e.target.value })}
-        />
+      <form noValidate onSubmit={handleSubmit} className={classes.form}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              className={classes.input}
+              required
+              fullWidth
+              variant="outlined"
+              size="small"
+              type="text"
+              label="username"
+              value={data.username}
+              onChange={(e) => setData({ ...data, username: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              className={classes.input}
+              required
+              fullWidth
+              variant="outlined"
+              size="small"
+              type="text"
+              label="name"
+              value={data.name}
+              onChange={(e) => setData({ ...data, name: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              className={classes.input}
+              required
+              fullWidth
+              variant="outlined"
+              size="small"
+              type="password"
+              label="password"
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
+            />
+          </Grid>
+        </Grid>
         <Button
-          className={classes.button}
           fullWidth
           variant="contained"
           color="primary"
           type="submit"
+          className={classes.button}
         >
           Register
         </Button>
