@@ -47,7 +47,6 @@ const CardDetails = () => {
 
     const res = await updateCard(id, data);
 
-    console.log(res);
     if (res) {
       history.push("/cards");
     }

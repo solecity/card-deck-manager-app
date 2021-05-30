@@ -7,11 +7,9 @@ export default makeStyles(() => ({
   box: {
     height: 120
   },
-  value: {
-    marginTop: "1rem"
-  },
   diamond: {
-    marginTop: -4
+    margin: "3px 4px 0 0",
+    fontSize: "small"
   },
   buttons: {
     marginRight: ".2rem",
