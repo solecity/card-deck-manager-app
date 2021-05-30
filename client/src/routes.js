@@ -7,6 +7,8 @@ import {
   Home,
   Login,
   Register,
+  Account,
+  UserDetails,
   Cards,
   CardDetails,
   Collections,
@@ -52,6 +54,8 @@ const Routes = () => {
       <Route exact from="/" render={() => <Home />} />
       <Route exact from="/login" render={() => <Login />} />
       <Route exact from="/register" render={() => <Register />} />
+      <Route exact from="/account" render={() => <Account />} />
+      <Route exact from="/userDetails" render={() => <UserDetails />} />
       <Route exact from="/cards" render={() => <Cards />} />
       <Route exact from="/cardDetails" render={() => <CardDetails />} />
       <Route exact from="/collections" render={() => <Collections />} />

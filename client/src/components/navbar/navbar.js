@@ -47,6 +47,9 @@ const NavBar = () => {
             >
               Collections
             </Button>
+            <Button color="inherit" onClick={() => history.push("/account")}>
+              Account
+            </Button>
             <Button color="inherit" onClick={handleLogout}>
               logout
             </Button>

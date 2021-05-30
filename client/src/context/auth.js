@@ -14,6 +14,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [_token, set_token] = useState(() => getJWT());
+  const [userId, setUserId] = useState("");
   const [userType, setUserType] = useState(0);
 
   const login = useCallback(async (payload) => {
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }) => {
     if (_token) {
       const decode = jwt.verify(_token, process.env.REACT_APP_JWT_KEY);
 
+      setUserId(decode.id);
       setUserType(decode.type);
     }
   }, [_token]);
@@ -44,6 +46,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         _token,
+        userId,
         userType
       }}
     >
