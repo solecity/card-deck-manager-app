@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 // external components
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 
 // custom components
@@ -27,12 +28,16 @@ const TabCollections = () => {
   const classes = useStyles();
 
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getData = async () => {
+    setIsLoading(true);
+
     const res = await getCollections();
 
     if (res) {
       setData(res);
+      setIsLoading(false);
     }
   };
 
@@ -56,12 +61,16 @@ const TabCollections = () => {
     <Grid container justify="center" className={classes.root}>
       <Form getData={getData} />
       <Grid item xs={10} className={classes.table}>
-        <Table
-          fields={fields}
-          data={data}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-        />
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <Table
+            fields={fields}
+            data={data}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
+        )}
       </Grid>
     </Grid>
   );
