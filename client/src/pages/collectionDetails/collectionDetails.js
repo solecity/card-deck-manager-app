@@ -18,12 +18,7 @@ import {
 } from "../../services/collection";
 import { getCard, getUserCards } from "../../services/card";
 
-// styles
-import useStyles from "./styles";
-
 const CollectionDetails = () => {
-  const classes = useStyles();
-
   const location = useLocation();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -55,10 +50,9 @@ const CollectionDetails = () => {
         });
 
         setRemainingCards(cards);
+        setIsLoading(false);
       }
     }
-
-    setIsLoading(false);
   }, [id]);
 
   const addCard = async (cardId) => {
