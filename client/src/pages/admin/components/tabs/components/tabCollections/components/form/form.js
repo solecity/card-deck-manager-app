@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
@@ -21,7 +22,7 @@ import useStyles from "./styles";
 const Form = ({ getData }) => {
   const classes = useStyles();
 
-  const [data, setData] = useState({ user: "", name: "" });
+  const [data, setData] = useState({ user: 0, name: "" });
   const [users, setUsers] = useState([]);
 
   const handleSubmit = async (e) => {
@@ -30,7 +31,7 @@ const Form = ({ getData }) => {
     const res = await createCollection(data);
 
     if (res) {
-      setData({ user: "", name: "" });
+      setData({ user: 0, name: "" });
 
       getData();
     }
@@ -67,20 +68,19 @@ const Form = ({ getData }) => {
           </Grid>
           <Grid item xs={12}>
             <Select
-              native
               fullWidth
               variant="outlined"
               input={<SelectInput />}
               value={data.user}
               onChange={(e) => setData({ ...data, user: e.target.value })}
             >
-              <option value="" disabled>
+              <MenuItem value={0} disabled>
                 user
-              </option>
+              </MenuItem>
               {users.map((user) => (
-                <option key={user._id} value={user._id}>
+                <MenuItem key={user._id} value={user._id}>
                   {user.username}
-                </option>
+                </MenuItem>
               ))}
             </Select>
           </Grid>
