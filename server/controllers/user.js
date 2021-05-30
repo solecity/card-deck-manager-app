@@ -98,7 +98,10 @@ export const updateUserInfo = async (req, res) => {
 
     user.username = username;
     user.name = name;
-    user.type = type;
+
+    if (type) {
+      user.type = type;
+    }
 
     await user.save();
 
