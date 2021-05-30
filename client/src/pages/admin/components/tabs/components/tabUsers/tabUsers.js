@@ -1,6 +1,6 @@
 // base
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 // external components
 import Grid from "@material-ui/core/Grid";
@@ -27,6 +27,8 @@ const TabUsers = () => {
 
   const history = useHistory();
 
+  const location = useLocation();
+
   const [data, setData] = useState([]);
 
   const getData = async () => {
@@ -38,7 +40,10 @@ const TabUsers = () => {
   };
 
   const handleEdit = async (id) => {
-    history.push({ pathname: "./userDetails", state: { id } });
+    history.push({
+      pathname: "./userDetails",
+      state: { id, from: location.pathname }
+    });
   };
 
   const handleDelete = async (id) => {

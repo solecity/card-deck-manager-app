@@ -8,10 +8,10 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 // custom components
+import { Header } from "../../components";
 import { SelectInput } from "../../components";
 
 // api
@@ -62,8 +62,8 @@ const UserDetails = () => {
   }, [id]);
 
   return (
-    <Container maxWidth="sm" className={classes.root}>
-      <Typography variant="h6">Edit user</Typography>
+    <Container>
+      <Header back path={location.state.from} title="Edit user" />
       <form noValidate onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>

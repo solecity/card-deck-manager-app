@@ -1,6 +1,6 @@
 // base
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 // external components
 import Card from "@material-ui/core/Card";
@@ -21,8 +21,13 @@ const CardComp = ({ collection, getData }) => {
 
   const history = useHistory();
 
+  const location = useLocation();
+
   const handleEdit = async (id) => {
-    history.push({ pathname: "./collectionDetails", state: { id } });
+    history.push({
+      pathname: "./collectionDetails",
+      state: { id, from: location.pathname }
+    });
   };
 
   const handleDelete = async (id) => {

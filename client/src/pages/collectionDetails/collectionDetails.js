@@ -86,8 +86,8 @@ const CollectionDetails = () => {
   }, [id, collectionCards]);
 
   return (
-    <Container className={classes.root}>
-      <Header title="Edit collection" />
+    <Container>
+      <Header back path={location.state.from} title="Edit collection" />
       <Form id={id} data={collectionInfo} setData={setCollectionInfo} />
       {isLoading ? (
         <Grid container justify="center">

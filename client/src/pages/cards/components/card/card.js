@@ -1,6 +1,6 @@
 // base
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 // external components
 import Grid from "@material-ui/core/Grid";
@@ -23,8 +23,13 @@ const CardComp = ({ card, getData }) => {
 
   const history = useHistory();
 
+  const location = useLocation();
+
   const handleEdit = async (id) => {
-    history.push({ pathname: "./cardDetails", state: { id } });
+    history.push({
+      pathname: "./cardDetails",
+      state: { id, from: location.pathname }
+    });
   };
 
   const handleDelete = async (id) => {

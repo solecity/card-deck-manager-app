@@ -6,8 +6,10 @@ import { useHistory, useLocation } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+
+// custom components
+import { Header } from "../../components";
 
 // api
 import { getCard, updateCard } from "../../services/card";
@@ -57,8 +59,8 @@ const CardDetails = () => {
   }, [id]);
 
   return (
-    <Container maxWidth="sm" className={classes.root}>
-      <Typography variant="h6">Edit card</Typography>
+    <Container>
+      <Header back path={location.state.from} title="Edit collection" />
       <form noValidate onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
