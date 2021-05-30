@@ -66,17 +66,14 @@ export const createCard = async (req, res) => {
     const data = req.body;
 
     if (!data.user) {
-      data.user = {
-        _id: loggedUser._id,
-        username: loggedUser.username
-      };
+      data.user = loggedUser._id;
     }
 
-    if (!isValidObjectId(data.user._id)) {
+    if (!isValidObjectId(data.user)) {
       return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
     }
 
-    const user = await User.findById(data.user._id);
+    const user = await User.findById(data.user);
 
     if (!user) {
       return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
