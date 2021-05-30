@@ -22,7 +22,7 @@ export const checkAuth = async (req, res, next) => {
         .json({ message: LOGIN.UNAUTHENTICATED });
     }
 
-    if (token === null) {
+    if (token === "null") {
       return res
         .status(httpStatus.UNAUTHORIZED)
         .json({ message: GENERAL.UNAUTHORIZED });

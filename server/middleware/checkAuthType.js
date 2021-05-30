@@ -16,7 +16,7 @@ export const checkAuthType = async (req, res, next) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if (token) {
+    if (token && token !== "null") {
       const userToken = jwt.verify(token, process.env.JWT_KEY);
 
       const user = await User.findById(userToken.id);
