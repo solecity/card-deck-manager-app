@@ -18,6 +18,10 @@ const Form = ({ id, data, setData }) => {
 
   const history = useHistory();
 
+  const handleChange = (name) => (e) => {
+    setData({ ...data, [name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -40,7 +44,7 @@ const Form = ({ id, data, setData }) => {
             required
             fullWidth
             value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
+            onChange={handleChange("name")}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -53,7 +57,7 @@ const Form = ({ id, data, setData }) => {
             fullWidth
             InputProps={{ inputProps: { min: 0 } }}
             value={data.value}
-            onChange={(e) => setData({ ...data, value: e.target.value })}
+            onChange={handleChange("value")}
           />
         </Grid>
         <Grid item xs={12}>
@@ -66,7 +70,7 @@ const Form = ({ id, data, setData }) => {
             multiline
             rows={4}
             value={data.description}
-            onChange={(e) => setData({ ...data, description: e.target.value })}
+            onChange={handleChange("description")}
           />
         </Grid>
       </Grid>

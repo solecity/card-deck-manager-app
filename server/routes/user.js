@@ -6,8 +6,7 @@ import {
   getUsers,
   getUser,
   createUser,
-  updateUserInfo,
-  updateUserPassword,
+  updateUser,
   deleteUser
 } from "../controllers/user.js";
 
@@ -29,20 +28,12 @@ router.get("/:id", checkAuth, validateId, getUser);
 
 router.post("/", checkAuthType, validateSchema(validateUser), createUser);
 
-router.patch(
+router.put(
   "/:id",
   checkAuth,
   validateSchema(validateUser),
   validateId,
-  updateUserInfo
-);
-
-router.patch(
-  "/password/:id",
-  checkAuth,
-  validateSchema(validateUser),
-  validateId,
-  updateUserPassword
+  updateUser
 );
 
 router.delete("/:id", checkAuth, adminAuthorization, validateId, deleteUser);

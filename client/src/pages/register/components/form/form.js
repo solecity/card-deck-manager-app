@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 // external components
-import { Grid, TextField, Typography, Button, Link } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
 
 // api
 import { createUser } from "../../../../services/user";

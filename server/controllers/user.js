@@ -78,16 +78,22 @@ export const createUser = async (req, res) => {
   }
 };
 
-export const updateUserInfo = async (req, res) => {
+export const updateUser = async (req, res) => {
   try {
     const { id: _id } = req.params;
-    const { username, name, type } = req.body;
+    const { username, name, password, type } = req.body;
     const loggedUser = req.user;
 
     const user = await User.findById(_id);
 
     if (!user) {
       return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
+    }
+
+    if (password && loggedUser.id !== _id) {
+      return res
+        .status(httpStatus.FORBIDDEN)
+        .json({ message: GENERAL.UNAUTHORIZED });
     }
 
     if (type && loggedUser.type !== USER_TYPES.ADMIN) {
@@ -99,41 +105,13 @@ export const updateUserInfo = async (req, res) => {
     user.username = username;
     user.name = name;
 
+    if (password) {
+      user.password = password;
+    }
+
     if (type) {
       user.type = type;
     }
-
-    await user.save();
-
-    const updatedUser = user.toObject();
-
-    return res
-      .status(httpStatus.OK)
-      .json({ user: updatedUser, message: USER.UPDATED });
-  } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
-  }
-};
-
-export const updateUserPassword = async (req, res) => {
-  try {
-    const { id: _id } = req.params;
-    const { password } = req.body;
-    const loggedUser = req.user;
-
-    const user = await User.findById(_id);
-
-    if (!user) {
-      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
-    }
-
-    if (loggedUser.id !== _id) {
-      return res
-        .status(httpStatus.FORBIDDEN)
-        .json({ message: GENERAL.UNAUTHORIZED });
-    }
-
-    user.password = password;
 
     await user.save();
 
@@ -143,27 +121,6 @@ export const updateUserPassword = async (req, res) => {
     return res
       .status(httpStatus.OK)
       .json({ user: updatedUser, message: USER.UPDATED });
-  } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
-  }
-};
-
-export const updateUserType = async (req, res) => {
-  try {
-    const { id: _id } = req.params;
-    const { type } = req.body;
-
-    const user = await User.findById(_id);
-
-    if (!user) {
-      return res.status(httpStatus.NOT_FOUND).json({ message: USER.NOT_FOUND });
-    }
-
-    user.type = type;
-
-    await user.save();
-
-    return res.status(httpStatus.OK).json({ user, message: USER.UPDATED });
   } catch (error) {
     return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }

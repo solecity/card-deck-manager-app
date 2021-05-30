@@ -32,7 +32,7 @@ export const createUser = async (payload) => {
 
 export const updateUser = async (id, payload) => {
   try {
-    const res = await api().patch(`/users/${id}`, payload);
+    const res = await api().put(`/users/${id}`, payload);
 
     return res ? res.data : {};
   } catch (error) {
