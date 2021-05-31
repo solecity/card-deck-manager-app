@@ -11,7 +11,6 @@ import { Table, Toolbar, Modal } from "../../../../../../components";
 import { Form } from "./components";
 
 // api
-import { getUser } from "../../../../../../services/user";
 import {
   getCollections,
   deleteCollection
@@ -34,8 +33,9 @@ const TabCollections = () => {
   const location = useLocation();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [openForm, setOpenForm] = useState(false);
   const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [openForm, setOpenForm] = useState(false);
 
   const getData = async () => {
     setIsLoading(true);
@@ -48,8 +48,20 @@ const TabCollections = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
   const handleForm = () => {
     setOpenForm(!openForm);
+  };
+
+  const handleSearchResult = (value) => {
+    if (search === "") return value;
+    else if (value.name.toLowerCase().includes(search.toLowerCase()))
+      return value;
+
+    return false;
   };
 
   const handleEdit = async (id, user) => {
@@ -73,7 +85,11 @@ const TabCollections = () => {
 
   return (
     <Grid container justify="center" className={classes.root}>
-      <Toolbar handleForm={handleForm} />
+      <Toolbar
+        search={search}
+        handleSearch={handleSearch}
+        handleForm={handleForm}
+      />
       <Modal open={openForm} handleClose={handleForm} title="Add collection">
         <Form getData={getData} handleForm={handleForm} />
       </Modal>
@@ -84,6 +100,7 @@ const TabCollections = () => {
           <Table
             fields={fields}
             data={data}
+            handleSearchResult={handleSearchResult}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />

@@ -10,7 +10,13 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
 import { BiEditAlt, BiTrashAlt } from "react-icons/bi";
 
-const TableComp = ({ fields, data, handleEdit, handleDelete }) => {
+const TableComp = ({
+  fields,
+  data,
+  handleSearchResult,
+  handleEdit,
+  handleDelete
+}) => {
   const renderHeaders = () => {
     return (
       <TableHead>
@@ -30,37 +36,36 @@ const TableComp = ({ fields, data, handleEdit, handleDelete }) => {
   const renderBody = () => {
     return (
       <TableBody>
-        {data.map((el, i) => (
-          <TableRow key={i}>
-            <TableCell>{i + 1}</TableCell>
-            {fields.map((field, j) =>
-              field.key === "user" ? (
-                <TableCell key={j} align="center">
-                  {el["user"][field.value]}
-                </TableCell>
-              ) : field.key === "cards" ? (
-                <TableCell key={j} align="center">
-                  {el[field.value].length}
-                </TableCell>
-              ) : (
-                <TableCell key={j} align="center">
-                  {el[field.value]}
-                </TableCell>
-              )
-            )}
-            <TableCell align="center">
-              <IconButton
-                color="primary"
-                onClick={() => handleEdit(el._id, el.user)}
-              >
-                <BiEditAlt />
-              </IconButton>
-              <IconButton color="primary" onClick={() => handleDelete(el._id)}>
-                <BiTrashAlt />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        ))}
+        {data
+          .filter((card) => handleSearchResult(card))
+          .map((el, i) => (
+            <TableRow key={i}>
+              <TableCell>{i + 1}</TableCell>
+              {fields.map((field, j) =>
+                field.key === "user" ? (
+                  <TableCell key={j} align="center">
+                    {el["user"][field.value]}
+                  </TableCell>
+                ) : field.key === "cards" ? (
+                  <TableCell key={j} align="center">
+                    {el[field.value].length}
+                  </TableCell>
+                ) : (
+                  <TableCell key={j} align="center">
+                    {el[field.value]}
+                  </TableCell>
+                )
+              )}
+              <TableCell align="center">
+                <IconButton onClick={() => handleEdit(el._id, el.user)}>
+                  <BiEditAlt />
+                </IconButton>
+                <IconButton onClick={() => handleDelete(el._id)}>
+                  <BiTrashAlt />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
       </TableBody>
     );
   };

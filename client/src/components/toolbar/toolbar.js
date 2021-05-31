@@ -1,5 +1,5 @@
 // base
-import React, { useState } from "react";
+import React from "react";
 
 // external components
 import Container from "@material-ui/core/Container";
@@ -12,14 +12,8 @@ import { BiSearch, BiPlusCircle } from "react-icons/bi";
 // styles
 import useStyles from "./styles.js";
 
-const Toolbar = ({ handleForm }) => {
+const Toolbar = ({ search, handleSearch, handleForm }) => {
   const classes = useStyles();
-
-  const [search, setSearch] = useState("");
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
 
   return (
     <Container className={classes.root}>
@@ -31,6 +25,7 @@ const Toolbar = ({ handleForm }) => {
             type="text"
             size="small"
             variant="outlined"
+            color="secondary"
             fullWidth
             onChange={handleSearch}
             placeholder="Search by name"

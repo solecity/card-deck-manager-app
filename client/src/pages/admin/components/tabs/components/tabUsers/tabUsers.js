@@ -31,8 +31,9 @@ const TabUsers = () => {
   const location = useLocation();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [openForm, setOpenForm] = useState(false);
   const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [openForm, setOpenForm] = useState(false);
 
   const getData = async () => {
     setIsLoading(true);
@@ -45,8 +46,20 @@ const TabUsers = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
   const handleForm = () => {
     setOpenForm(!openForm);
+  };
+
+  const handleSearchResult = (value) => {
+    if (search === "") return value;
+    else if (value.name.toLowerCase().includes(search.toLowerCase()))
+      return value;
+
+    return false;
   };
 
   const handleEdit = async (id) => {
@@ -70,7 +83,11 @@ const TabUsers = () => {
 
   return (
     <Grid container justify="center" className={classes.root}>
-      <Toolbar handleForm={handleForm} />
+      <Toolbar
+        search={search}
+        handleSearch={handleSearch}
+        handleForm={handleForm}
+      />
       <Modal open={openForm} handleClose={handleForm} title="Add user">
         <Form getData={getData} handleForm={handleForm} />
       </Modal>
@@ -81,6 +98,7 @@ const TabUsers = () => {
           <Table
             fields={fields}
             data={data}
+            handleSearchResult={handleSearchResult}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />

@@ -17,11 +17,16 @@ import { SelectInput } from "../../components";
 // api
 import { getUser, updateUser } from "../../services/user";
 
+// hooks
+import { useAuth } from "../../hooks/useAuth";
+
 // styles
 import useStyles from "./styles";
 
 const UserDetails = () => {
   const classes = useStyles();
+
+  const { userId } = useAuth();
 
   const history = useHistory();
 
@@ -80,6 +85,7 @@ const UserDetails = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Select
+              disabled={userId === id}
               fullWidth
               variant="outlined"
               input={<SelectInput />}

@@ -1,7 +1,8 @@
 // base
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 // external components
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
@@ -12,45 +13,79 @@ import { Form, Card } from "./components";
 // api
 import { getUserCards } from "../../services/card";
 
+// hooks
+import { useAuth } from "../../hooks/useAuth";
+
 // styles
 import useStyles from "./styles";
 
 const Cards = () => {
   const classes = useStyles();
 
+  const { userId } = useAuth();
+
+  const [isLoading, setIsLoading] = useState(false);
   const [cards, setCards] = useState([]);
+  const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
 
-  const getData = async () => {
-    const res = await getUserCards();
+  const getData = useCallback(async () => {
+    setIsLoading(true);
 
-    if (res) {
-      setCards(res);
+    if (userId) {
+      const res = await getUserCards(userId);
+
+      if (res) {
+        setCards(res);
+        setIsLoading(false);
+      }
     }
+  }, [userId]);
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
   };
 
   const handleForm = () => {
     setOpenForm(!openForm);
   };
 
+  const handleSearchResult = (value) => {
+    if (search === "") return value;
+    else if (value.name.toLowerCase().includes(search.toLowerCase()))
+      return value;
+
+    return false;
+  };
+
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   return (
     <Container>
       <Header title="Cards" />
-      <Toolbar handleForm={handleForm} />
+      <Toolbar
+        search={search}
+        handleSearch={handleSearch}
+        handleForm={handleForm}
+      />
       <Modal open={openForm} handleClose={handleForm} title="Add card">
         <Form getData={getData} handleForm={handleForm} />
       </Modal>
       <Grid container spacing={2} className={classes.list}>
-        {Boolean(cards.length) &&
-          cards.map((card) => (
-            <Grid item xs={3} key={card._id}>
-              <Card card={card} getData={getData} />
-            </Grid>
-          ))}
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          Boolean(cards.length) &&
+          cards
+            .filter((card) => handleSearchResult(card))
+            .map((card) => (
+              <Grid item xs={3} key={card._id}>
+                <Card card={card} getData={getData} />
+              </Grid>
+            ))
+        )}
       </Grid>
     </Container>
   );
