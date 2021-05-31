@@ -76,7 +76,6 @@ const Form = ({ id, data, setData }) => {
                   size="small"
                   required
                   fullWidth
-                  value={data.password}
                   onChange={handleChange("password")}
                 />
               ) : (

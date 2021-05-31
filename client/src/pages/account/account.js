@@ -36,7 +36,7 @@ const Account = () => {
           setData({
             username: user.username,
             name: user.name,
-            password: ""
+            password: user.password
           });
           setIsLoading(false);
         }
