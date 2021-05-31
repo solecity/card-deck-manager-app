@@ -1,5 +1,5 @@
 // base
-import React from "react";
+import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 // external components
@@ -11,6 +11,9 @@ import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { BiDiamond, BiEditAlt, BiTrashAlt } from "react-icons/bi";
+
+// custom components
+import { ConfirmDelete } from "../../../../components";
 
 // api
 import { deleteCard } from "../../../../services/card";
@@ -25,6 +28,12 @@ const CardComp = ({ card, getData }) => {
 
   const location = useLocation();
 
+  const [openConfirm, setOpenConfirm] = useState(false);
+
+  const handleConfirm = async () => {
+    setOpenConfirm(!openConfirm);
+  };
+
   const handleEdit = async (id) => {
     history.push({
       pathname: "./cardDetails",
@@ -36,6 +45,7 @@ const CardComp = ({ card, getData }) => {
     const res = await deleteCard(id);
 
     if (res) {
+      setOpenConfirm(!openConfirm);
       getData();
     }
   };
@@ -62,10 +72,17 @@ const CardComp = ({ card, getData }) => {
         <IconButton size="small" onClick={() => handleEdit(card._id)}>
           <BiEditAlt />
         </IconButton>
-        <IconButton size="small" onClick={() => handleDelete(card._id)}>
+        <IconButton size="small" onClick={() => handleConfirm()}>
           <BiTrashAlt />
         </IconButton>
       </CardActions>
+      <ConfirmDelete
+        open={openConfirm}
+        handleClose={handleConfirm}
+        handleDelete={() => handleDelete(card._id)}
+        item="card"
+        name={card.name}
+      />
     </Card>
   );
 };

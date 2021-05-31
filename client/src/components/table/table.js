@@ -14,8 +14,8 @@ const TableComp = ({
   fields,
   data,
   handleSearchResult,
-  handleEdit,
-  handleDelete
+  handleConfirm,
+  handleEdit
 }) => {
   const renderHeaders = () => {
     return (
@@ -41,26 +41,16 @@ const TableComp = ({
           .map((el, i) => (
             <TableRow key={i}>
               <TableCell>{i + 1}</TableCell>
-              {fields.map((field, j) =>
-                field.key === "user" ? (
-                  <TableCell key={j} align="center">
-                    {el["user"][field.value]}
-                  </TableCell>
-                ) : field.key === "cards" ? (
-                  <TableCell key={j} align="center">
-                    {el[field.value].length}
-                  </TableCell>
-                ) : (
-                  <TableCell key={j} align="center">
-                    {el[field.value]}
-                  </TableCell>
-                )
-              )}
+              {fields.map((field, j) => (
+                <TableCell key={j} align="center">
+                  {el[field.value]}
+                </TableCell>
+              ))}
               <TableCell align="center">
                 <IconButton onClick={() => handleEdit(el._id, el.user)}>
                   <BiEditAlt />
                 </IconButton>
-                <IconButton onClick={() => handleDelete(el._id)}>
+                <IconButton onClick={() => handleConfirm(el)}>
                   <BiTrashAlt />
                 </IconButton>
               </TableCell>

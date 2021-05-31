@@ -7,7 +7,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 
 // custom components
-import { Table, Toolbar, Modal } from "../../../../../../components";
+import {
+  Table,
+  Toolbar,
+  Modal,
+  ConfirmDelete
+} from "../../../../../../components";
 import { Form } from "./components";
 
 // api
@@ -17,7 +22,7 @@ import { getCards, deleteCard } from "../../../../../../services/card";
 import useStyles from "./styles";
 
 const fields = [
-  { key: "user", label: "User", value: "username" },
+  { key: "user", label: "User", value: "user" },
   { key: "name", label: "Name", value: "name" },
   { key: "cards", label: "Description", value: "description" },
   { key: "value", label: "Value", value: "value" }
@@ -34,6 +39,8 @@ const TabCards = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [card, setCard] = useState(false);
 
   const getData = async () => {
     setIsLoading(true);
@@ -41,7 +48,12 @@ const TabCards = () => {
     const res = await getCards();
 
     if (res) {
-      setData(res);
+      const data = res.map((r) => ({
+        ...r,
+        user: r.user.username
+      }));
+
+      setData(data);
       setIsLoading(false);
     }
   };
@@ -62,6 +74,11 @@ const TabCards = () => {
     return false;
   };
 
+  const handleConfirm = async (el) => {
+    setOpenConfirm(!openConfirm);
+    setCard(el);
+  };
+
   const handleEdit = (id) => {
     history.push({
       pathname: "./cardDetails",
@@ -73,6 +90,7 @@ const TabCards = () => {
     const res = await deleteCard(id);
 
     if (res) {
+      setOpenConfirm(!openConfirm);
       getData();
     }
   };
@@ -99,11 +117,18 @@ const TabCards = () => {
             fields={fields}
             data={data}
             handleSearchResult={handleSearchResult}
+            handleConfirm={handleConfirm}
             handleEdit={handleEdit}
-            handleDelete={handleDelete}
           />
         )}
       </Grid>
+      <ConfirmDelete
+        open={openConfirm}
+        handleClose={handleConfirm}
+        handleDelete={() => handleDelete(card._id)}
+        item="card"
+        name={card.name}
+      />
     </Grid>
   );
 };

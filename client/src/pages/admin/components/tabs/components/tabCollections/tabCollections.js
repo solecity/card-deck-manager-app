@@ -7,7 +7,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 
 // custom components
-import { Table, Toolbar, Modal } from "../../../../../../components";
+import {
+  Table,
+  Toolbar,
+  Modal,
+  ConfirmDelete
+} from "../../../../../../components";
 import { Form } from "./components";
 
 // api
@@ -20,7 +25,7 @@ import {
 import useStyles from "./styles";
 
 const fields = [
-  { key: "user", label: "User", value: "username" },
+  { key: "user", label: "User", value: "user" },
   { key: "name", label: "Name", value: "name" },
   { key: "cards", label: "Total Cards", value: "cards" }
 ];
@@ -36,6 +41,8 @@ const TabCollections = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [collection, setCollection] = useState(false);
 
   const getData = async () => {
     setIsLoading(true);
@@ -43,7 +50,13 @@ const TabCollections = () => {
     const res = await getCollections();
 
     if (res) {
-      setData(res);
+      const data = res.map((r) => ({
+        ...r,
+        user: r.user.username,
+        cards: r.cards.length
+      }));
+
+      setData(data);
       setIsLoading(false);
     }
   };
@@ -64,6 +77,11 @@ const TabCollections = () => {
     return false;
   };
 
+  const handleConfirm = async (el) => {
+    setOpenConfirm(!openConfirm);
+    setCollection(el);
+  };
+
   const handleEdit = async (id, user) => {
     history.push({
       pathname: "./collectionDetails",
@@ -75,6 +93,7 @@ const TabCollections = () => {
     const res = await deleteCollection(id);
 
     if (res) {
+      setOpenConfirm(!openConfirm);
       getData();
     }
   };
@@ -101,11 +120,18 @@ const TabCollections = () => {
             fields={fields}
             data={data}
             handleSearchResult={handleSearchResult}
+            handleConfirm={handleConfirm}
             handleEdit={handleEdit}
-            handleDelete={handleDelete}
           />
         )}
       </Grid>
+      <ConfirmDelete
+        open={openConfirm}
+        handleClose={handleConfirm}
+        handleDelete={() => handleDelete(collection._id)}
+        item="collection"
+        name={collection.name}
+      />
     </Grid>
   );
 };

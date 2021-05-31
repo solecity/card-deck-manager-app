@@ -4,5 +4,6 @@ import Table from "./table/table";
 import Toolbar from "./toolbar/toolbar";
 import Modal from "./modal/modal";
 import SelectInput from "./selectInput/selectInput";
+import ConfirmDelete from "./confirmDelete/confirmDelete";
 
-export { NavBar, Header, Table, Toolbar, Modal, SelectInput };
+export { NavBar, Header, Table, Toolbar, Modal, SelectInput, ConfirmDelete };

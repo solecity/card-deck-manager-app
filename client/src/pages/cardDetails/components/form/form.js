@@ -1,13 +1,19 @@
 // base
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
 // external components
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 
+// custom components
+import { SelectInput } from "../../../../components";
+
 // api
+import { getUsers } from "../../../../services/user";
 import { updateCard } from "../../../../services/card";
 
 // styles
@@ -17,6 +23,12 @@ const Form = ({ id, data, setData }) => {
   const classes = useStyles();
 
   const history = useHistory();
+
+  const location = useLocation();
+
+  const [users, setUsers] = useState([]);
+
+  const fromAdmin = location.state.from === "/admin";
 
   const handleChange = (name) => (e) => {
     setData({ ...data, [name]: e.target.value });
@@ -28,9 +40,21 @@ const Form = ({ id, data, setData }) => {
     const res = await updateCard(id, data);
 
     if (res) {
-      history.push("/cards");
+      fromAdmin ? history.push("/admin") : history.push("/cards");
     }
   };
+
+  useEffect(() => {
+    const getUsersSelect = async () => {
+      const res = await getUsers();
+
+      if (res) {
+        setUsers(res);
+      }
+    };
+
+    getUsersSelect();
+  }, []);
 
   return (
     <form noValidate onSubmit={handleSubmit}>
@@ -73,6 +97,26 @@ const Form = ({ id, data, setData }) => {
             onChange={handleChange("description")}
           />
         </Grid>
+        {fromAdmin && (
+          <Grid item xs={12}>
+            <Select
+              fullWidth
+              variant="outlined"
+              input={<SelectInput />}
+              value={data.user}
+              onChange={handleChange("user")}
+            >
+              <MenuItem value={0} disabled>
+                user
+              </MenuItem>
+              {users.map((user) => (
+                <MenuItem key={user._id} value={user._id}>
+                  {user.username}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+        )}
       </Grid>
       <Button
         fullWidth

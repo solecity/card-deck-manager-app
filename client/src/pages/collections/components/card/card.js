@@ -1,5 +1,5 @@
 // base
-import React from "react";
+import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 // external components
@@ -9,6 +9,9 @@ import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { BiEditAlt, BiTrashAlt } from "react-icons/bi";
+
+// custom components
+import { ConfirmDelete } from "../../../../components";
 
 // api
 import { deleteCollection } from "../../../../services/collection";
@@ -23,6 +26,12 @@ const CardComp = ({ collection, getData }) => {
 
   const location = useLocation();
 
+  const [openConfirm, setOpenConfirm] = useState(false);
+
+  const handleConfirm = async () => {
+    setOpenConfirm(!openConfirm);
+  };
+
   const handleEdit = async (id) => {
     history.push({
       pathname: "./collectionDetails",
@@ -34,6 +43,7 @@ const CardComp = ({ collection, getData }) => {
     const res = await deleteCollection(id);
 
     if (res) {
+      setOpenConfirm(!openConfirm);
       getData();
     }
   };
@@ -56,6 +66,13 @@ const CardComp = ({ collection, getData }) => {
           <BiTrashAlt />
         </IconButton>
       </CardActions>
+      <ConfirmDelete
+        open={openConfirm}
+        handleClose={handleConfirm}
+        handleDelete={() => handleDelete(collection._id)}
+        item="collection"
+        name={collection.name}
+      />
     </Card>
   );
 };

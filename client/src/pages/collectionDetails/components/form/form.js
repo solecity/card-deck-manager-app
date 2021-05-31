@@ -30,6 +30,10 @@ const Form = ({ id, data, setData }) => {
 
   const fromAdmin = location.state.from === "/admin";
 
+  const handleChange = (name) => (e) => {
+    setData({ ...data, [name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -64,7 +68,7 @@ const Form = ({ id, data, setData }) => {
             required
             fullWidth
             value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
+            onChange={handleChange("name")}
           />
         </Grid>
         {fromAdmin && (
@@ -74,7 +78,7 @@ const Form = ({ id, data, setData }) => {
               variant="outlined"
               input={<SelectInput />}
               value={data.user}
-              onChange={(e) => setData({ ...data, user: e.target.value })}
+              onChange={handleChange("user")}
             >
               <MenuItem value={0} disabled>
                 user

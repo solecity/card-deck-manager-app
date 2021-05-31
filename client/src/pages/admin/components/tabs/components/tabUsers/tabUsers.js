@@ -7,11 +7,19 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 
 // custom components
-import { Table, Toolbar, Modal } from "../../../../../../components";
+import {
+  Table,
+  Toolbar,
+  Modal,
+  ConfirmDelete
+} from "../../../../../../components";
 import { Form } from "./components";
 
 // api
 import { getUsers, deleteUser } from "../../../../../../services/user";
+
+// constants
+import { USER_TYPES } from "../../../../../../constants/general";
 
 // styles
 import useStyles from "./styles";
@@ -34,6 +42,8 @@ const TabUsers = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [user, setUser] = useState(false);
 
   const getData = async () => {
     setIsLoading(true);
@@ -41,7 +51,12 @@ const TabUsers = () => {
     const res = await getUsers();
 
     if (res) {
-      setData(res);
+      const data = res.map((r) => ({
+        ...r,
+        type: r.type === USER_TYPES.ADMIN ? "admin" : "standard"
+      }));
+
+      setData(data);
       setIsLoading(false);
     }
   };
@@ -62,6 +77,11 @@ const TabUsers = () => {
     return false;
   };
 
+  const handleConfirm = async (el) => {
+    setOpenConfirm(!openConfirm);
+    setUser(el);
+  };
+
   const handleEdit = async (id) => {
     history.push({
       pathname: "./userDetails",
@@ -73,6 +93,7 @@ const TabUsers = () => {
     const res = await deleteUser(id);
 
     if (res) {
+      setOpenConfirm(!openConfirm);
       getData();
     }
   };
@@ -99,11 +120,18 @@ const TabUsers = () => {
             fields={fields}
             data={data}
             handleSearchResult={handleSearchResult}
+            handleConfirm={handleConfirm}
             handleEdit={handleEdit}
-            handleDelete={handleDelete}
           />
         )}
       </Grid>
+      <ConfirmDelete
+        open={openConfirm}
+        handleClose={handleConfirm}
+        handleDelete={() => handleDelete(user._id)}
+        item="user"
+        name={user.name}
+      />
     </Grid>
   );
 };
