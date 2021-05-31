@@ -103,7 +103,7 @@ export const updateUser = async (req, res) => {
           .json({ message: GENERAL.UNAUTHORIZED });
       }
 
-      if (loggedUser._id === _id) {
+      if (loggedUser.id === _id) {
         return res
           .status(httpStatus.FORBIDDEN)
           .json({ message: USER.FORBIDDEN_TYPE });

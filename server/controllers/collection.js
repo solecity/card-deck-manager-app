@@ -155,6 +155,22 @@ export const updateCollection = async (req, res) => {
       }
     }
 
+    if (data.user) {
+      if (!isValidObjectId(data.user)) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: USER.NOT_FOUND });
+      }
+
+      const user = await User.findById(data.user);
+
+      if (!user) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: USER.NOT_FOUND });
+      }
+    }
+
     collection.name = data.name;
     collection.user = data.user || collection.user;
 

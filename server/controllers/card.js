@@ -119,13 +119,13 @@ export const updateCard = async (req, res) => {
     }
 
     if (data.user) {
-      if (!isValidObjectId(data.user._id)) {
+      if (!isValidObjectId(data.user)) {
         return res
           .status(httpStatus.NOT_FOUND)
           .json({ message: USER.NOT_FOUND });
       }
 
-      const user = await User.findById(data.user._id);
+      const user = await User.findById(data.user);
 
       if (!user) {
         return res
