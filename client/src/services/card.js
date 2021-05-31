@@ -10,9 +10,9 @@ export const getCards = async (payload) => {
   }
 };
 
-export const getUserCards = async (payload) => {
+export const getUserCards = async (id) => {
   try {
-    const res = await api().get("/cards/user", payload);
+    const res = await api().get(`/cards/user/${id}`);
 
     return res ? res.data : {};
   } catch (error) {

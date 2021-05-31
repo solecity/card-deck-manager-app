@@ -24,7 +24,7 @@ const router = express.Router();
 
 router.get("/", checkAuth, adminAuthorization, getCards);
 
-router.get("/user", checkAuth, getUserCards);
+router.get("/user/:id", checkAuth, validateId, getUserCards);
 
 router.get("/:id", checkAuth, validateId, getCard);
 

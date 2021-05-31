@@ -18,42 +18,56 @@ import {
 } from "../../services/collection";
 import { getCard, getUserCards } from "../../services/card";
 
+// hooks
+import { useAuth } from "../../hooks/useAuth";
+
 const CollectionDetails = () => {
+  const { userId } = useAuth();
+
   const location = useLocation();
 
+  const id = location.state.id;
+  const user = location.state.user;
+
   const [isLoading, setIsLoading] = useState(false);
-  const [collectionInfo, setCollectionInfo] = useState({ name: "" });
+  const [collectionInfo, setCollectionInfo] = useState({
+    user: "",
+    name: ""
+  });
   const [collectionCards, setCollectionCards] = useState([]);
   const [remainingCards, setRemainingCards] = useState([]);
-
-  const id = location.state.id;
 
   const getData = useCallback(async () => {
     setIsLoading(true);
 
     const collection = await getCollection(id);
-    const allCards = await getUserCards();
 
-    if (collection) {
-      setCollectionInfo({ name: collection.name });
-      setCollectionCards(collection.cards);
+    if (userId) {
+      const allCards = user
+        ? await getUserCards(user._id)
+        : await getUserCards(userId);
 
-      if (allCards) {
-        const cards = allCards.filter((r) => {
-          for (const i in collection.cards) {
-            if (collection.cards[i]._id === r._id) {
-              return false;
+      if (collection) {
+        setCollectionInfo({ user: collection.user._id, name: collection.name });
+        setCollectionCards(collection.cards);
+
+        if (allCards) {
+          const cards = allCards.filter((r) => {
+            for (const i in collection.cards) {
+              if (collection.cards[i]._id === r._id) {
+                return false;
+              }
             }
-          }
 
-          return true;
-        });
+            return true;
+          });
 
-        setRemainingCards(cards);
-        setIsLoading(false);
+          setRemainingCards(cards);
+          setIsLoading(false);
+        }
       }
     }
-  }, [id]);
+  }, [id, user, userId]);
 
   const addCard = async (cardId) => {
     const cards = remainingCards.filter((card) => card._id !== cardId);
@@ -90,6 +104,7 @@ const CollectionDetails = () => {
       ) : (
         <Cards
           title={collectionInfo.name}
+          user={user || collectionInfo.user}
           collectionCards={collectionCards}
           remainingCards={remainingCards}
           addCard={addCard}

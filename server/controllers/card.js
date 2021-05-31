@@ -9,7 +9,7 @@ import Collection from "../models/collection.js";
 
 // constants
 import { USER_TYPES } from "../constants/general.js";
-import { GENERAL, USER, CARD, COLLECTION } from "../constants/messages.js";
+import { GENERAL, USER, CARD } from "../constants/messages.js";
 
 const { Types, isValidObjectId } = mongoose;
 
@@ -25,9 +25,18 @@ export const getCards = async (req, res) => {
 
 export const getUserCards = async (req, res) => {
   try {
+    const { id: _id } = req.params;
     const loggedUser = req.user;
 
-    const cards = await Card.find({ user: loggedUser._id }).populate("user");
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      if (_id !== loggedUser.id) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
+    }
+
+    const cards = await Card.find({ user: _id }).populate("user");
 
     return res.status(httpStatus.OK).json(cards);
   } catch (error) {

@@ -49,7 +49,10 @@ const TableComp = ({ fields, data, handleEdit, handleDelete }) => {
               )
             )}
             <TableCell align="center">
-              <IconButton color="primary" onClick={() => handleEdit(el._id)}>
+              <IconButton
+                color="primary"
+                onClick={() => handleEdit(el._id, el.user)}
+              >
                 <BiEditAlt />
               </IconButton>
               <IconButton color="primary" onClick={() => handleDelete(el._id)}>
