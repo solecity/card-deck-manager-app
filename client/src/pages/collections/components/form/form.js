@@ -2,10 +2,8 @@
 import React, { useState } from "react";
 
 // external components
-import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 // api
@@ -14,7 +12,7 @@ import { createCollection } from "../../../../services/collection";
 // styles
 import useStyles from "./styles";
 
-const Form = ({ getData }) => {
+const Form = ({ getData, handleForm }) => {
   const classes = useStyles();
 
   const [data, setData] = useState({ name: "" });
@@ -27,39 +25,38 @@ const Form = ({ getData }) => {
     if (res) {
       setData({ name: "" });
 
+      handleForm();
+
       getData();
     }
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h6">Add collection</Typography>
-      <form noValidate onSubmit={handleSubmit}>
-        <Grid container>
-          <Grid item xs={12}>
-            <TextField
-              label="name"
-              type="text"
-              variant="outlined"
-              size="small"
-              required
-              fullWidth
-              value={data.name}
-              onChange={(e) => setData({ ...data, name: e.target.value })}
-            />
-          </Grid>
+    <form noValidate onSubmit={handleSubmit}>
+      <Grid container>
+        <Grid item xs={12}>
+          <TextField
+            label="name"
+            type="text"
+            variant="outlined"
+            size="small"
+            required
+            fullWidth
+            value={data.name}
+            onChange={(e) => setData({ ...data, name: e.target.value })}
+          />
         </Grid>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          type="submit"
-          className={classes.button}
-        >
-          Add
-        </Button>
-      </form>
-    </Container>
+      </Grid>
+      <Button
+        fullWidth
+        variant="contained"
+        color="primary"
+        type="submit"
+        className={classes.button}
+      >
+        Add
+      </Button>
+    </form>
   );
 };
 

@@ -6,7 +6,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
 // custom components
-import { Header } from "../../components";
+import { Header, Toolbar, Modal } from "../../components";
 import { Form, Card } from "./components";
 
 // api
@@ -19,6 +19,7 @@ const Collections = () => {
   const classes = useStyles();
 
   const [collections, setCollections] = useState([]);
+  const [openForm, setOpenForm] = useState(false);
 
   const getData = async () => {
     const res = await getUserCollections();
@@ -28,6 +29,10 @@ const Collections = () => {
     }
   };
 
+  const handleForm = () => {
+    setOpenForm(!openForm);
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -35,13 +40,14 @@ const Collections = () => {
   return (
     <Container>
       <Header title="Collections" />
-      <Grid container justify="center">
-        <Form getData={getData} />
-      </Grid>
+      <Toolbar handleForm={handleForm} />
+      <Modal open={openForm} handleClose={handleForm} title="Add collection">
+        <Form getData={getData} handleForm={handleForm} />
+      </Modal>
       <Grid container spacing={2} className={classes.list}>
         {Boolean(collections.length) &&
           collections.map((collection) => (
-            <Grid item xs={2} key={collection._id}>
+            <Grid item xs={3} key={collection._id}>
               <Card collection={collection} getData={getData} />
             </Grid>
           ))}

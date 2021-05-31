@@ -6,7 +6,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
 // custom components
-import { Header } from "../../components";
+import { Header, Toolbar, Modal } from "../../components";
 import { Form, Card } from "./components";
 
 // api
@@ -19,6 +19,7 @@ const Cards = () => {
   const classes = useStyles();
 
   const [cards, setCards] = useState([]);
+  const [openForm, setOpenForm] = useState(false);
 
   const getData = async () => {
     const res = await getUserCards();
@@ -28,6 +29,10 @@ const Cards = () => {
     }
   };
 
+  const handleForm = () => {
+    setOpenForm(!openForm);
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -35,16 +40,17 @@ const Cards = () => {
   return (
     <Container>
       <Header title="Cards" />
-      <Grid container justify="center">
-        <Form getData={getData} />
-        <Grid container spacing={2} className={classes.list}>
-          {Boolean(cards.length) &&
-            cards.map((card) => (
-              <Grid item xs={3} key={card._id}>
-                <Card card={card} getData={getData} />
-              </Grid>
-            ))}
-        </Grid>
+      <Toolbar handleForm={handleForm} />
+      <Modal open={openForm} handleClose={handleForm} title="Add card">
+        <Form getData={getData} handleForm={handleForm} />
+      </Modal>
+      <Grid container spacing={2} className={classes.list}>
+        {Boolean(cards.length) &&
+          cards.map((card) => (
+            <Grid item xs={3} key={card._id}>
+              <Card card={card} getData={getData} />
+            </Grid>
+          ))}
       </Grid>
     </Container>
   );

@@ -1,5 +1,6 @@
 // base
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 // external components
 import Grid from "@material-ui/core/Grid";
@@ -13,6 +14,7 @@ import useStyles from "./styles";
 
 const Cards = ({
   title,
+  user,
   collectionCards,
   remainingCards,
   addCard,
@@ -20,11 +22,15 @@ const Cards = ({
 }) => {
   const classes = useStyles();
 
+  const location = useLocation();
+
+  const fromAdmin = location.state.from === "/admin";
+
   return (
     <Grid container justify="space-between" className={classes.root}>
       <Grid item xs={6} className={classes.box}>
         <Typography variant="h6" className={classes.subtitle}>
-          My Cards
+          {fromAdmin ? `${user.username}'s` : "My"} Cards
         </Typography>
         {remainingCards.map((card) => (
           <ListItem key={card._id} card={card} add addCard={addCard} />
