@@ -18,7 +18,7 @@ const Login = () => {
       container
       justify="center"
       alignItems="center"
-      className={classes.form}
+      className={classes.root}
     >
       <Form />
     </Grid>

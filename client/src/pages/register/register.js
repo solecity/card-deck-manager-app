@@ -2,7 +2,7 @@
 import React from "react";
 
 // external components
-import { Grid } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 
 // custom components
 import { Form } from "./components";
@@ -16,9 +16,9 @@ const Register = () => {
   return (
     <Grid
       container
-      justify="space-around"
+      justify="center"
       alignItems="center"
-      className={classes.form}
+      className={classes.root}
     >
       <Form />
     </Grid>
