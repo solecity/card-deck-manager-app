@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   card: {
     height: 280
   },
@@ -9,6 +9,7 @@ export default makeStyles(() => ({
   },
   diamond: {
     margin: "3px 4px 0 0",
+    color: theme.palette.secondary.dark,
     fontSize: "small"
   },
   buttons: {

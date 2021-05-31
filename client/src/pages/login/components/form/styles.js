@@ -12,6 +12,6 @@ export default makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   link: {
-    color: "#668cff"
+    color: theme.palette.secondary.main
   }
 }));

@@ -2,6 +2,10 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
+// external components
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 // custom components
 import { NavBar } from "./components";
 
@@ -12,18 +16,19 @@ import Routes from "./routes";
 import { AuthProvider } from "./context/auth";
 
 // styles
-import "./App.css";
+import theme from "./theme";
 
 const App = () => {
   return (
-    <div className="App">
+    <ThemeProvider theme={theme}>
       <AuthProvider>
+        <CssBaseline />
         <Router>
           <NavBar />
           <Routes />
         </Router>
       </AuthProvider>
-    </div>
+    </ThemeProvider>
   );
 };
 

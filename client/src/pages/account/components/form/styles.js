@@ -11,6 +11,6 @@ export default makeStyles((theme) => ({
   },
   link: {
     marginLeft: ".2rem",
-    color: "#668cff"
+    color: theme.palette.secondary.main
   }
 }));

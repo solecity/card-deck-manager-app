@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   root: {
     width: "80%"
   },
@@ -14,6 +14,6 @@ export default makeStyles(() => ({
     marginBottom: "1rem"
   },
   link: {
-    color: "#668cff"
+    color: theme.palette.secondary.main
   }
 }));
