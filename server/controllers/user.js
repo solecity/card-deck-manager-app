@@ -96,10 +96,18 @@ export const updateUser = async (req, res) => {
         .json({ message: GENERAL.UNAUTHORIZED });
     }
 
-    if (type && loggedUser.type !== USER_TYPES.ADMIN) {
-      return res
-        .status(httpStatus.FORBIDDEN)
-        .json({ message: GENERAL.UNAUTHORIZED });
+    if (type) {
+      if (loggedUser.type !== USER_TYPES.ADMIN) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
+
+      if (loggedUser._id === _id) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: USER.FORBIDDEN_TYPE });
+      }
     }
 
     user.username = username;
