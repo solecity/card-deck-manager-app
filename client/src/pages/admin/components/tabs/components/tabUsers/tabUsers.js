@@ -11,12 +11,16 @@ import {
   Table,
   Toolbar,
   Modal,
-  ConfirmDelete
+  ConfirmDelete,
+  ConfirmWarning
 } from "../../../../../../components";
 import { Form } from "./components";
 
 // api
 import { getUsers, deleteUser } from "../../../../../../services/user";
+
+// hooks
+import { useAuth } from "../../../../../../hooks/useAuth";
 
 // constants
 import { USER_TYPES } from "../../../../../../constants/general";
@@ -34,6 +38,8 @@ const fields = [
 const TabUsers = () => {
   const classes = useStyles();
 
+  const { userId } = useAuth();
+
   const history = useHistory();
 
   const location = useLocation();
@@ -42,7 +48,8 @@ const TabUsers = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
-  const [openConfirm, setOpenConfirm] = useState(false);
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmWarning, setOpenConfirmWarning] = useState(false);
   const [user, setUser] = useState(false);
 
   const getData = async () => {
@@ -78,8 +85,17 @@ const TabUsers = () => {
   };
 
   const handleConfirm = async (el) => {
-    setOpenConfirm(!openConfirm);
-    setUser(el);
+    if (el._id === userId) {
+      setOpenConfirmWarning(true);
+    } else {
+      setOpenConfirmDelete(true);
+      setUser(el);
+    }
+  };
+
+  const handleClose = async () => {
+    setOpenConfirmWarning(false);
+    setOpenConfirmDelete(false);
   };
 
   const handleEdit = async (id) => {
@@ -93,7 +109,7 @@ const TabUsers = () => {
     const res = await deleteUser(id);
 
     if (res) {
-      setOpenConfirm(!openConfirm);
+      setOpenConfirmDelete(!openConfirmDelete);
       getData();
     }
   };
@@ -126,12 +142,13 @@ const TabUsers = () => {
         )}
       </Grid>
       <ConfirmDelete
-        open={openConfirm}
-        handleClose={handleConfirm}
+        open={openConfirmDelete}
+        handleClose={handleClose}
         handleDelete={() => handleDelete(user._id)}
         item="user"
         name={user.name}
       />
+      <ConfirmWarning open={openConfirmWarning} handleClose={handleClose} />
     </Grid>
   );
 };

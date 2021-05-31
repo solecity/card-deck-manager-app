@@ -5,5 +5,15 @@ import Toolbar from "./toolbar/toolbar";
 import Modal from "./modal/modal";
 import SelectInput from "./selectInput/selectInput";
 import ConfirmDelete from "./confirmDelete/confirmDelete";
+import ConfirmWarning from "./confirmWarning/confirmWarning";
 
-export { NavBar, Header, Table, Toolbar, Modal, SelectInput, ConfirmDelete };
+export {
+  NavBar,
+  Header,
+  Table,
+  Toolbar,
+  Modal,
+  SelectInput,
+  ConfirmDelete,
+  ConfirmWarning
+};

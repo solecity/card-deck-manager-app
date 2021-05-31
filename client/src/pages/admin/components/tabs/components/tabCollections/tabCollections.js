@@ -78,8 +78,12 @@ const TabCollections = () => {
   };
 
   const handleConfirm = async (el) => {
-    setOpenConfirm(!openConfirm);
+    setOpenConfirm(true);
     setCollection(el);
+  };
+
+  const handleClose = async () => {
+    setOpenConfirm(false);
   };
 
   const handleEdit = async (id) => {
@@ -127,7 +131,7 @@ const TabCollections = () => {
       </Grid>
       <ConfirmDelete
         open={openConfirm}
-        handleClose={handleConfirm}
+        handleClose={handleClose}
         handleDelete={() => handleDelete(collection._id)}
         item="collection"
         name={collection.name}

@@ -10,24 +10,19 @@ import Button from "@material-ui/core/Button";
 // styles
 import useStyles from "./styles";
 
-const ConfirmDelete = ({ open, handleClose, handleDelete, item, name }) => {
+const ConfirmWarning = ({ open, handleClose }) => {
   const classes = useStyles();
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>
-        {`Are you sure you want to delete the ${item} "${name}"?`}
-      </DialogTitle>
+      <DialogTitle>You cannot delete yourself</DialogTitle>
       <DialogActions>
         <Button onClick={handleClose} className={classes.cancel}>
-          Cancel
-        </Button>
-        <Button onClick={handleDelete} className={classes.confirm} autoFocus>
-          Delete
+          Ok
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default ConfirmDelete;
+export default ConfirmWarning;

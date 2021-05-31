@@ -75,8 +75,12 @@ const TabCards = () => {
   };
 
   const handleConfirm = async (el) => {
-    setOpenConfirm(!openConfirm);
+    setOpenConfirm(true);
     setCard(el);
+  };
+
+  const handleClose = async () => {
+    setOpenConfirm(false);
   };
 
   const handleEdit = (id) => {
@@ -124,7 +128,7 @@ const TabCards = () => {
       </Grid>
       <ConfirmDelete
         open={openConfirm}
-        handleClose={handleConfirm}
+        handleClose={handleClose}
         handleDelete={() => handleDelete(card._id)}
         item="card"
         name={card.name}
