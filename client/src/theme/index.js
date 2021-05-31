@@ -8,6 +8,11 @@ const theme = createMuiTheme({
     secondary: { main: "#f7cc0a", dark: "#e8a302" }
   },
   overrides: {
+    MuiBackdrop: {
+      root: {
+        backgroundColor: "rgba(0, 0, 0, 0.7)"
+      }
+    },
     MuiPaper: {
       root: {
         backgroundColor: "#383838"

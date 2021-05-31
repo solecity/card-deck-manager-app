@@ -8,7 +8,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import { BiLogOutCircle } from "react-icons/bi";
+import { BiCarousel, BiUserCircle, BiLogOutCircle } from "react-icons/bi";
 
 // hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -26,6 +26,10 @@ const NavBar = () => {
 
   const { logout, _token, userType } = useAuth();
 
+  const handlePageChange = (path) => {
+    history.push(path);
+  };
+
   const handleLogout = () => {
     logout();
   };
@@ -34,27 +38,33 @@ const NavBar = () => {
     <AppBar position="static" className={classes.root}>
       <Toolbar>
         <Typography className={classes.title} variant="h5">
-          Card Deck Manager
+          <BiCarousel className={classes.icon} /> Card Deck Manager
         </Typography>
         {Boolean(_token) ? (
           <div>
             {userType === USER_TYPES.ADMIN && (
-              <Button color="inherit" onClick={() => history.push("/admin")}>
+              <Button
+                color="inherit"
+                onClick={() => handlePageChange("/admin")}
+              >
                 Admin
               </Button>
             )}
-            <Button color="inherit" onClick={() => history.push("/cards")}>
+            <Button color="inherit" onClick={() => handlePageChange("/cards")}>
               Cards
             </Button>
             <Button
               color="inherit"
-              onClick={() => history.push("/collections")}
+              onClick={() => handlePageChange("/collections")}
             >
               Collections
             </Button>
-            <Button color="inherit" onClick={() => history.push("/account")}>
-              Account
-            </Button>
+            <IconButton
+              color="inherit"
+              onClick={() => handlePageChange("/account")}
+            >
+              <BiUserCircle />
+            </IconButton>
             <IconButton color="secondary" onClick={handleLogout}>
               <BiLogOutCircle />
             </IconButton>
