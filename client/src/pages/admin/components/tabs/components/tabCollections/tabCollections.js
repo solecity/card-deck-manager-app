@@ -25,9 +25,9 @@ import {
 import useStyles from "./styles";
 
 const fields = [
-  { key: "user", label: "User", value: "user" },
-  { key: "name", label: "Name", value: "name" },
-  { key: "cards", label: "Total Cards", value: "cards" }
+  { label: "User", value: "username" },
+  { label: "Name", value: "name" },
+  { label: "Total Cards", value: "cards" }
 ];
 
 const TabCollections = () => {
@@ -52,7 +52,7 @@ const TabCollections = () => {
     if (res) {
       const data = res.map((r) => ({
         ...r,
-        user: r.user.username,
+        username: r.user.username,
         cards: r.cards.length
       }));
 
@@ -82,10 +82,10 @@ const TabCollections = () => {
     setCollection(el);
   };
 
-  const handleEdit = async (id, user) => {
+  const handleEdit = async (id) => {
     history.push({
       pathname: "./collectionDetails",
-      state: { id, user, from: location.pathname }
+      state: { id, from: location.pathname }
     });
   };
 

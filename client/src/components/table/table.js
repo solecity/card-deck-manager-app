@@ -47,7 +47,7 @@ const TableComp = ({
                 </TableCell>
               ))}
               <TableCell align="center">
-                <IconButton onClick={() => handleEdit(el._id, el.user)}>
+                <IconButton onClick={() => handleEdit(el._id)}>
                   <BiEditAlt />
                 </IconButton>
                 <IconButton onClick={() => handleConfirm(el)}>
