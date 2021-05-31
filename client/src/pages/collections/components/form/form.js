@@ -16,9 +16,33 @@ const Form = ({ getData, handleForm }) => {
   const classes = useStyles();
 
   const [data, setData] = useState({ name: "" });
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let messages = { ...errors };
+
+    if (data.name === "") {
+      messages = { ...messages, name: "Name is required." };
+    } else if (data.name.length > 30) {
+      messages = {
+        ...messages,
+        name: "Name cannot have more than 30 characters"
+      };
+    } else {
+      messages = { ...messages, name: "" };
+    }
+
+    setErrors(messages);
+  };
+
+  const handleChange = (name) => (e) => {
+    setData({ ...data, [name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    validateForm();
 
     const res = await createCollection(data);
 
@@ -43,7 +67,9 @@ const Form = ({ getData, handleForm }) => {
             required
             fullWidth
             value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
+            onChange={handleChange("name")}
+            error={Boolean(errors.name)}
+            helperText={errors.name}
           />
         </Grid>
       </Grid>

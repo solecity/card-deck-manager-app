@@ -26,13 +26,59 @@ const Form = () => {
     name: "",
     password: ""
   });
+  const [errors, setErrors] = useState({});
 
   const history = useHistory();
 
   const { login } = useAuth();
 
+  const validateForm = () => {
+    let messages = { ...errors };
+
+    if (data.username === "") {
+      messages = { ...messages, username: "Username is required" };
+    } else if (data.username.length < 4 || data.username.length > 30) {
+      messages = {
+        ...messages,
+        username: "Username has to have between 4 and 30 characters"
+      };
+    } else {
+      messages = { ...messages, username: "" };
+    }
+
+    if (data.name === "") {
+      messages = { ...messages, name: "Name is required." };
+    } else if (data.name.length > 30) {
+      messages = {
+        ...messages,
+        name: "Name cannot have more than 30 characters"
+      };
+    } else {
+      messages = { ...messages, name: "" };
+    }
+
+    if (data.password === "") {
+      messages = { ...messages, password: "Password is required." };
+    } else if (data.password.length < 4 || data.password.length > 30) {
+      messages = {
+        ...messages,
+        password: "Password has to have between 4 and 30 characters"
+      };
+    } else {
+      messages = { ...messages, password: "" };
+    }
+
+    setErrors(messages);
+  };
+
+  const handleChange = (name) => (e) => {
+    setData({ ...data, [name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    validateForm();
 
     const res = await createUser(data);
 
@@ -61,7 +107,9 @@ const Form = () => {
               type="text"
               label="username"
               value={data.username}
-              onChange={(e) => setData({ ...data, username: e.target.value })}
+              onChange={handleChange("username")}
+              error={Boolean(errors.username)}
+              helperText={errors.username}
             />
           </Grid>
           <Grid item xs={12}>
@@ -74,7 +122,9 @@ const Form = () => {
               type="text"
               label="name"
               value={data.name}
-              onChange={(e) => setData({ ...data, name: e.target.value })}
+              onChange={handleChange("name")}
+              error={Boolean(errors.name)}
+              helperText={errors.name}
             />
           </Grid>
           <Grid item xs={12}>
@@ -87,7 +137,9 @@ const Form = () => {
               type="password"
               label="password"
               value={data.password}
-              onChange={(e) => setData({ ...data, password: e.target.value })}
+              onChange={handleChange("password")}
+              error={Boolean(errors.password)}
+              helperText={errors.password}
             />
           </Grid>
         </Grid>

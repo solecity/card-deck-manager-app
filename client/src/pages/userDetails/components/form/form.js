@@ -1,5 +1,5 @@
 // base
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 // external components
@@ -23,8 +23,50 @@ const Form = ({ loggedUser, id, data, setData }) => {
 
   const history = useHistory();
 
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let messages = { ...errors };
+
+    if (data.username === "") {
+      messages = { ...messages, username: "Username is required" };
+    } else if (data.username.length < 4 || data.username.length > 30) {
+      messages = {
+        ...messages,
+        username: "Username has to have between 4 and 30 characters"
+      };
+    } else {
+      messages = { ...messages, username: "" };
+    }
+
+    if (data.name === "") {
+      messages = { ...messages, name: "Name is required" };
+    } else if (data.name.length > 30) {
+      messages = {
+        ...messages,
+        name: "Name cannot have more than 30 characters"
+      };
+    } else {
+      messages = { ...messages, name: "" };
+    }
+
+    if (data.type === 0) {
+      messages = { ...messages, type: "Type is required" };
+    } else {
+      messages = { ...messages, type: "" };
+    }
+
+    setErrors(messages);
+  };
+
+  const handleChange = (name) => (e) => {
+    setData({ ...data, [name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    validateForm();
 
     const res = await updateUser(id, data);
 
@@ -45,7 +87,9 @@ const Form = ({ loggedUser, id, data, setData }) => {
             required
             fullWidth
             value={data.username}
-            onChange={(e) => setData({ ...data, username: e.target.value })}
+            onChange={handleChange("username")}
+            error={Boolean(errors.username)}
+            helperText={errors.username}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -55,7 +99,9 @@ const Form = ({ loggedUser, id, data, setData }) => {
             variant="outlined"
             input={<SelectInput />}
             value={data.type}
-            onChange={(e) => setData({ ...data, type: e.target.value })}
+            onChange={handleChange("type")}
+            error={Boolean(errors.type)}
+            helperText={errors.type}
           >
             <MenuItem value={0} disabled>
               type
@@ -73,7 +119,9 @@ const Form = ({ loggedUser, id, data, setData }) => {
             required
             fullWidth
             value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
+            onChange={handleChange("name")}
+            error={Boolean(errors.name)}
+            helperText={errors.name}
           />
         </Grid>
       </Grid>

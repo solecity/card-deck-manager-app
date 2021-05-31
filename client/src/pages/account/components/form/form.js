@@ -19,17 +19,60 @@ const Form = ({ id, data, setData }) => {
 
   const [changePassword, setChangePassword] = useState(false);
   const [sendMessage, setSendMessage] = useState(false);
-
-  const handleChange = (name) => (e) => {
-    setData({ ...data, [name]: e.target.value });
-  };
+  const [errors, setErrors] = useState({});
 
   const showPassword = () => {
     setChangePassword(true);
   };
 
+  const validateForm = () => {
+    let messages = { ...errors };
+
+    if (data.username === "") {
+      messages = { ...messages, username: "Username is required" };
+    } else if (data.username.length < 4 || data.username.length > 30) {
+      messages = {
+        ...messages,
+        username: "Username has to have between 4 and 30 characters"
+      };
+    } else {
+      messages = { ...messages, username: "" };
+    }
+
+    if (data.name === "") {
+      messages = { ...messages, name: "Name is required." };
+    } else if (data.name.length > 30) {
+      messages = {
+        ...messages,
+        name: "Name cannot have more than 30 characters"
+      };
+    } else {
+      messages = { ...messages, name: "" };
+    }
+
+    if (
+      Boolean(data.password) &&
+      (data.password.length < 4 || data.password.length > 30)
+    ) {
+      messages = {
+        ...messages,
+        password: "Password has to have between 4 and 30 characters"
+      };
+    } else {
+      messages = { ...messages, password: "" };
+    }
+
+    setErrors(messages);
+  };
+
+  const handleChange = (name) => (e) => {
+    setData({ ...data, [name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    validateForm();
 
     const res = await updateUser(id, data);
 
@@ -53,6 +96,8 @@ const Form = ({ id, data, setData }) => {
                 fullWidth
                 value={data.username}
                 onChange={handleChange("username")}
+                error={Boolean(errors.username)}
+                helperText={errors.username}
               />
             </Grid>
             <Grid item xs={12}>
@@ -65,6 +110,8 @@ const Form = ({ id, data, setData }) => {
                 fullWidth
                 value={data.name}
                 onChange={handleChange("name")}
+                error={Boolean(errors.name)}
+                helperText={errors.name}
               />
             </Grid>
             <Grid item xs={12}>
@@ -77,6 +124,8 @@ const Form = ({ id, data, setData }) => {
                   required
                   fullWidth
                   onChange={handleChange("password")}
+                  error={Boolean(errors.password)}
+                  helperText={errors.password}
                 />
               ) : (
                 <Link className={classes.link} href="#" onClick={showPassword}>

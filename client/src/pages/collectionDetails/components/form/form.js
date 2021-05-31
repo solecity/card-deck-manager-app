@@ -27,8 +27,26 @@ const Form = ({ id, data, setData }) => {
   const location = useLocation();
 
   const [users, setUsers] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const fromAdmin = location.state.from === "/admin";
+
+  const validateForm = () => {
+    let messages = { ...errors };
+
+    if (data.name === "") {
+      messages = { ...messages, name: "Name is required." };
+    } else if (data.name.length > 30) {
+      messages = {
+        ...messages,
+        name: "Name cannot have more than 30 characters"
+      };
+    } else {
+      messages = { ...messages, name: "" };
+    }
+
+    setErrors(messages);
+  };
 
   const handleChange = (name) => (e) => {
     setData({ ...data, [name]: e.target.value });
@@ -36,6 +54,8 @@ const Form = ({ id, data, setData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    validateForm();
 
     const res = await updateCollection(id, data);
 
@@ -69,6 +89,8 @@ const Form = ({ id, data, setData }) => {
             fullWidth
             value={data.name}
             onChange={handleChange("name")}
+            error={Boolean(errors.name)}
+            helperText={errors.name}
           />
         </Grid>
         {fromAdmin && (

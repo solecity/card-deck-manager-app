@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 
 // external components
 import Grid from "@material-ui/core/Grid";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -28,9 +30,56 @@ const Form = ({ getData, handleForm }) => {
     value: ""
   });
   const [users, setUsers] = useState([]);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let messages = { ...errors };
+
+    if (data.name === "") {
+      messages = { ...messages, name: "Name is required" };
+    } else if (data.name.length > 30) {
+      messages = {
+        ...messages,
+        name: "Name cannot have more than 30 characters"
+      };
+    } else {
+      messages = { ...messages, name: "" };
+    }
+
+    if (data.description === "") {
+      messages = { ...messages, description: "Description is required" };
+    } else {
+      messages = { ...messages, description: "" };
+    }
+
+    if (data.value === "") {
+      messages = { ...messages, value: "Value is required" };
+    } else if (data.value <= 0) {
+      messages = {
+        ...messages,
+        value: "Value has to be a positive number"
+      };
+    } else {
+      messages = { ...messages, value: "" };
+    }
+
+    if (data.user === 0) {
+      messages = { ...messages, user: "User is required" };
+    } else {
+      messages = { ...messages, user: "" };
+    }
+
+    setErrors(messages);
+  };
+
+  const handleChange = (name) => (e) => {
+    setData({ ...data, [name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    validateForm();
 
     const res = await createCard(data);
 
@@ -67,7 +116,9 @@ const Form = ({ getData, handleForm }) => {
             required
             fullWidth
             value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
+            onChange={handleChange("name")}
+            error={Boolean(errors.name)}
+            helperText={errors.name}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -80,7 +131,9 @@ const Form = ({ getData, handleForm }) => {
             fullWidth
             InputProps={{ inputProps: { min: 0 } }}
             value={data.value}
-            onChange={(e) => setData({ ...data, value: e.target.value })}
+            onChange={handleChange("value")}
+            error={Boolean(errors.value)}
+            helperText={errors.value}
           />
         </Grid>
         <Grid item xs={12}>
@@ -93,26 +146,31 @@ const Form = ({ getData, handleForm }) => {
             multiline
             rows={4}
             value={data.description}
-            onChange={(e) => setData({ ...data, description: e.target.value })}
+            onChange={handleChange("description")}
+            error={Boolean(errors.description)}
+            helperText={errors.description}
           />
         </Grid>
         <Grid item xs={12}>
-          <Select
-            fullWidth
-            variant="outlined"
-            input={<SelectInput />}
-            value={data.user}
-            onChange={(e) => setData({ ...data, user: e.target.value })}
-          >
-            <MenuItem value={0} disabled>
-              user
-            </MenuItem>
-            {users.map((user) => (
-              <MenuItem key={user._id} value={user._id}>
-                {user.username}
+          <FormControl fullWidth error={Boolean(errors.user)}>
+            <Select
+              fullWidth
+              variant="outlined"
+              input={<SelectInput />}
+              value={data.user}
+              onChange={handleChange("user")}
+            >
+              <MenuItem value={0} disabled>
+                user
               </MenuItem>
-            ))}
-          </Select>
+              {users.map((user) => (
+                <MenuItem key={user._id} value={user._id}>
+                  {user.username}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>{errors.user}</FormHelperText>
+          </FormControl>
         </Grid>
       </Grid>
       <Button
