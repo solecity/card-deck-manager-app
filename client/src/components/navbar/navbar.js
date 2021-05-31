@@ -3,7 +3,12 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 
 // external components
-import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import { BiLogOutCircle } from "react-icons/bi";
 
 // hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -50,9 +55,9 @@ const NavBar = () => {
             <Button color="inherit" onClick={() => history.push("/account")}>
               Account
             </Button>
-            <Button color="inherit" onClick={handleLogout}>
-              logout
-            </Button>
+            <IconButton color="secondary" onClick={handleLogout}>
+              <BiLogOutCircle />
+            </IconButton>
           </div>
         ) : (
           <></>

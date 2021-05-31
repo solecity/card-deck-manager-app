@@ -5,7 +5,7 @@ const theme = createMuiTheme({
     type: "dark",
     background: { default: "#4d4d4d" },
     primary: { main: "#242424" },
-    secondary: { main: "#ffd517", dark: "#e8a302" }
+    secondary: { main: "#f7cc0a", dark: "#e8a302" }
   },
   overrides: {
     MuiPaper: {
@@ -25,17 +25,17 @@ const theme = createMuiTheme({
     },
     MuiInputAdornment: {
       root: {
-        color: "#ffd517"
+        color: "#f7cc0a"
       }
     },
     MuiIconButton: {
       root: {
-        color: "#ffd517"
+        color: "#f7cc0a"
       }
     },
     MuiButton: {
       containedPrimary: {
-        backgroundColor: "#ffd517",
+        backgroundColor: "#f7cc0a",
         color: "#383838"
       }
     }
