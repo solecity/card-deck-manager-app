@@ -2,7 +2,7 @@
 import InputBase from "@material-ui/core/InputBase";
 import { withStyles } from "@material-ui/core/styles";
 
-export const SelectInput = withStyles((theme) => ({
+const SelectInput = withStyles((theme) => ({
   root: {
     "label + &": {
       marginTop: theme.spacing(3)
@@ -36,3 +36,5 @@ export const SelectInput = withStyles((theme) => ({
     }
   }
 }))(InputBase);
+
+export default SelectInput;

@@ -18,7 +18,6 @@ const Header = ({ back, path, title }) => {
   const history = useHistory();
 
   const goBack = () => {
-    console.log(path);
     history.push(path);
   };
 
