@@ -4,6 +4,8 @@ import { useHistory, useLocation } from "react-router-dom";
 
 // external components
 import Grid from "@material-ui/core/Grid";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -43,6 +45,12 @@ const Form = ({ id, data, setData }) => {
       };
     } else {
       messages = { ...messages, name: "" };
+    }
+
+    if (data.user === 0) {
+      messages = { ...messages, user: "User is required" };
+    } else {
+      messages = { ...messages, user: "" };
     }
 
     setErrors(messages);
@@ -95,22 +103,25 @@ const Form = ({ id, data, setData }) => {
         </Grid>
         {fromAdmin && (
           <Grid item xs={12}>
-            <Select
-              fullWidth
-              variant="outlined"
-              input={<SelectInput />}
-              value={data.user}
-              onChange={handleChange("user")}
-            >
-              <MenuItem value={0} disabled>
-                user
-              </MenuItem>
-              {users.map((user) => (
-                <MenuItem key={user._id} value={user._id}>
-                  {user.username}
+            <FormControl fullWidth error={Boolean(errors.user)}>
+              <Select
+                fullWidth
+                variant="outlined"
+                input={<SelectInput />}
+                value={data.user._id || ""}
+                onChange={handleChange("user")}
+              >
+                <MenuItem value={0} disabled>
+                  user
                 </MenuItem>
-              ))}
-            </Select>
+                {users.map((user) => (
+                  <MenuItem key={user._id} value={user._id}>
+                    {user.username}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>{errors.user}</FormHelperText>
+            </FormControl>
           </Grid>
         )}
       </Grid>

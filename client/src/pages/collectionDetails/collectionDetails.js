@@ -18,7 +18,12 @@ import {
 } from "../../services/collection";
 import { getCard, getUserCards } from "../../services/card";
 
+// styles
+import useStyles from "./styles";
+
 const CollectionDetails = () => {
+  const classes = useStyles();
+
   const location = useLocation();
 
   const id = location.state.id;
@@ -31,7 +36,7 @@ const CollectionDetails = () => {
   const [collectionCards, setCollectionCards] = useState([]);
   const [remainingCards, setRemainingCards] = useState([]);
 
-  const getData = useCallback(async () => {
+  const getData = useCallback(async (id) => {
     setIsLoading(true);
 
     const collection = await getCollection(id);
@@ -39,7 +44,11 @@ const CollectionDetails = () => {
     if (collection) {
       const allCards = await getUserCards(collection.user._id);
 
-      setCollectionInfo({ user: collection.user, name: collection.name });
+      setCollectionInfo({
+        userId: collection.user._id,
+        user: collection.user,
+        name: collection.name
+      });
       setCollectionCards(collection.cards);
 
       if (allCards) {
@@ -57,7 +66,7 @@ const CollectionDetails = () => {
         setIsLoading(false);
       }
     }
-  }, [id]);
+  }, []);
 
   const addCard = async (cardId) => {
     const cards = remainingCards.filter((card) => card._id !== cardId);
@@ -76,8 +85,8 @@ const CollectionDetails = () => {
   };
 
   useEffect(() => {
-    getData();
-  }, [getData]);
+    getData(id);
+  }, [id, getData]);
 
   useEffect(() => {
     updateCollectionCards(id, collectionCards);
@@ -88,7 +97,7 @@ const CollectionDetails = () => {
       <Header back path={location.state.from} title="Edit collection" />
       <Form id={id} data={collectionInfo} setData={setCollectionInfo} />
       {isLoading ? (
-        <Grid container justify="center">
+        <Grid container justify="center" className={classes.loading}>
           <CircularProgress />
         </Grid>
       ) : (
