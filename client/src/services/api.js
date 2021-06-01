@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // utils
-import { getJWT } from "../utils/jwt";
+import { getJWT, clearJWT } from "../utils/jwt";
 
 const apiExport = () => {
   const api = axios.create({
@@ -14,6 +14,21 @@ const apiExport = () => {
 
     return config;
   });
+
+  const UNAUTHORIZED = 401;
+
+  api.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error.response.status === UNAUTHORIZED) {
+        clearJWT();
+      } else {
+        return Promise.reject(error);
+      }
+    }
+  );
 
   return api;
 };

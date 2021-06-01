@@ -45,14 +45,21 @@ const Form = () => {
 
   const handleChange = (name) => (e) => {
     setData({ ...data, [name]: e.target.value });
+    setErrors({ ...errors, [name]: "" });
+    setGeneralError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    validateForm();
+    await validateForm();
 
-    login(data);
+    login(data).then((res) => {
+      if (!res) {
+        setSendMessage(true);
+        setGeneralError("Wrong username or password");
+      }
+    });
   };
 
   return (

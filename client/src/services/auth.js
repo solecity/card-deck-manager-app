@@ -6,7 +6,7 @@ export const fetchToken = async ({ username, password }) => {
 
     return res ? res.data : {};
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 

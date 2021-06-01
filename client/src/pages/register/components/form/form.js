@@ -26,6 +26,7 @@ const Form = () => {
     name: "",
     password: ""
   });
+  const [errorUsername, setErrorUsername] = useState("");
   const [errors, setErrors] = useState({});
 
   const history = useHistory();
@@ -73,16 +74,20 @@ const Form = () => {
 
   const handleChange = (name) => (e) => {
     setData({ ...data, [name]: e.target.value });
+    setErrorUsername("");
+    setErrors({ ...errors, [name]: "" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    validateForm();
+    await validateForm();
 
     const res = await createUser(data);
-
-    if (res) {
+    console.log(res.status);
+    if (res.status) {
+      setErrorUsername("Username already exists");
+    } else {
       login({
         username: data.username,
         password: data.password
@@ -96,6 +101,7 @@ const Form = () => {
         Register
       </Typography>
       <form noValidate onSubmit={handleSubmit} className={classes.form}>
+        {console.log(errorUsername)}
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
@@ -108,8 +114,8 @@ const Form = () => {
               label="username"
               value={data.username}
               onChange={handleChange("username")}
-              error={Boolean(errors.username)}
-              helperText={errors.username}
+              error={Boolean(errors.username) || Boolean(errorUsername)}
+              helperText={errors.username || errorUsername}
             />
           </Grid>
           <Grid item xs={12}>

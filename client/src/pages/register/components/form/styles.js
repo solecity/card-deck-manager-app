@@ -13,5 +13,10 @@ export default makeStyles((theme) => ({
   },
   link: {
     color: theme.palette.secondary.main
+  },
+  message: {
+    marginTop: "1rem",
+    color: theme.palette.error,
+    textAlign: "center"
   }
 }));

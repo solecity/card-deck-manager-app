@@ -23,6 +23,8 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       setJWT(token);
       set_token(token);
+    } else {
+      return false;
     }
   }, []);
 

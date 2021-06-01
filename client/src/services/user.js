@@ -26,7 +26,7 @@ export const createUser = async (payload) => {
 
     return res ? res.data : {};
   } catch (error) {
-    throw error;
+    return { status: error.response.status, message: error.message };
   }
 };
 
