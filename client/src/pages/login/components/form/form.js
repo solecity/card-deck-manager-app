@@ -120,11 +120,9 @@ const Form = () => {
       </Grid>
       {sendMessage && (
         <Grid item xs={12}>
-          (
           <Typography variant="subtitle2" className={classes.message}>
             {generalError}
           </Typography>
-          )
         </Grid>
       )}
     </Grid>
