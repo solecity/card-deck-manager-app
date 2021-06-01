@@ -86,7 +86,9 @@ const Form = ({ getData, handleForm }) => {
 
     const res = await createUser(data);
 
-    if (res) {
+    console.log(res);
+
+    if (!res.status) {
       setData({ username: "", name: "", password: "", type: 0 });
 
       handleForm();

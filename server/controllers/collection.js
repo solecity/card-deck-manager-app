@@ -156,6 +156,14 @@ export const updateCollection = async (req, res) => {
     }
 
     if (data.user) {
+      if (loggedUser.type !== USER_TYPES.ADMIN) {
+        if (loggedUser.id !== data.user) {
+          return res
+            .status(httpStatus.FORBIDDEN)
+            .json({ message: GENERAL.UNAUTHORIZED });
+        }
+      }
+
       if (!isValidObjectId(data.user)) {
         return res
           .status(httpStatus.NOT_FOUND)

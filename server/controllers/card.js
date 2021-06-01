@@ -29,7 +29,7 @@ export const getUserCards = async (req, res) => {
     const loggedUser = req.user;
 
     if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (_id !== loggedUser.id) {
+      if (loggedUser.id !== _id) {
         return res
           .status(httpStatus.FORBIDDEN)
           .json({ message: GENERAL.UNAUTHORIZED });
@@ -76,6 +76,14 @@ export const createCard = async (req, res) => {
 
     if (!data.user) {
       data.user = loggedUser._id;
+    }
+
+    if (loggedUser.type !== USER_TYPES.ADMIN) {
+      if (loggedUser.id !== data.user) {
+        return res
+          .status(httpStatus.FORBIDDEN)
+          .json({ message: GENERAL.UNAUTHORIZED });
+      }
     }
 
     if (!isValidObjectId(data.user)) {
