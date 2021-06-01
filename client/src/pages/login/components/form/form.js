@@ -118,13 +118,15 @@ const Form = () => {
           </Link>
         </form>
       </Grid>
-      <Grid item xs={12}>
-        {sendMessage && (
+      {sendMessage && (
+        <Grid item xs={12}>
+          (
           <Typography variant="subtitle2" className={classes.message}>
             {generalError}
           </Typography>
-        )}
-      </Grid>
+          )
+        </Grid>
+      )}
     </Grid>
   );
 };
