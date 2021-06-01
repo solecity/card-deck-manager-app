@@ -7,7 +7,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
 // custom components
-import { Header, Toolbar, Modal } from "../../components";
+import { Header, Toolbar, Modal, NoData } from "../../components";
 import { Form, Card } from "./components";
 
 // api
@@ -75,9 +75,10 @@ const Cards = () => {
       </Modal>
       <Grid container spacing={2} className={classes.list}>
         {isLoading ? (
-          <CircularProgress />
-        ) : (
-          Boolean(cards.length) &&
+          <Grid container justify="center" className={classes.loading}>
+            <CircularProgress />
+          </Grid>
+        ) : Boolean(cards.length) ? (
           cards
             .filter((card) => handleSearchResult(card))
             .map((card) => (
@@ -85,6 +86,8 @@ const Cards = () => {
                 <Card card={card} getData={getData} />
               </Grid>
             ))
+        ) : (
+          <NoData item="card" />
         )}
       </Grid>
     </Container>

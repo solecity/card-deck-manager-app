@@ -6,6 +6,7 @@ import Modal from "./modal/modal";
 import SelectInput from "./selectInput/selectInput";
 import ConfirmDelete from "./confirmDelete/confirmDelete";
 import ConfirmWarning from "./confirmWarning/confirmWarning";
+import NoData from "./noData/noData";
 
 export {
   NavBar,
@@ -15,5 +16,6 @@ export {
   Modal,
   SelectInput,
   ConfirmDelete,
-  ConfirmWarning
+  ConfirmWarning,
+  NoData
 };

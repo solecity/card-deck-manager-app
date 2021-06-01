@@ -10,13 +10,22 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
 import { BiEditAlt, BiTrashAlt } from "react-icons/bi";
 
+// custom components
+import { NoData } from "../../components";
+
+// styles
+import useStyles from "./styles";
+
 const TableComp = ({
   fields,
   data,
   handleSearchResult,
   handleConfirm,
-  handleEdit
+  handleEdit,
+  item
 }) => {
+  const classes = useStyles();
+
   const renderHeaders = () => {
     return (
       <TableHead>
@@ -27,7 +36,9 @@ const TableComp = ({
               {field.label}
             </TableCell>
           ))}
-          <TableCell align="center">Actions</TableCell>
+          <TableCell className={classes.actions} align="center">
+            Actions
+          </TableCell>
         </TableRow>
       </TableHead>
     );
@@ -61,10 +72,13 @@ const TableComp = ({
   };
 
   return (
-    <Table size="small">
-      {renderHeaders()}
-      {renderBody()}
-    </Table>
+    <>
+      <Table size="small">
+        {renderHeaders()}
+        {Boolean(data.length) && renderBody()}
+      </Table>
+      {!Boolean(data.length) && <NoData isTable item={item} />}
+    </>
   );
 };
 
