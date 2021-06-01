@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 // external components
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 
 // custom components
 import { Header } from "../../components";
@@ -15,7 +16,12 @@ import { getUser } from "../../services/user";
 // hooks
 import { useAuth } from "../../hooks/useAuth";
 
+// styles
+import useStyles from "./styles";
+
 const Account = () => {
+  const classes = useStyles();
+
   const { userId } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +56,9 @@ const Account = () => {
     <Container>
       <Header title="Account" />
       {isLoading ? (
-        <CircularProgress />
+        <Grid container justify="center" className={classes.loading}>
+          <CircularProgress />
+        </Grid>
       ) : (
         <Form id={userId} data={data} setData={setData} />
       )}

@@ -118,7 +118,9 @@ const TabCollections = () => {
       </Modal>
       <Grid item xs={10} className={classes.table}>
         {isLoading ? (
-          <CircularProgress />
+          <Grid container justify="center" className={classes.loading}>
+            <CircularProgress />
+          </Grid>
         ) : (
           <Table
             fields={fields}
@@ -126,6 +128,7 @@ const TabCollections = () => {
             handleSearchResult={handleSearchResult}
             handleConfirm={handleConfirm}
             handleEdit={handleEdit}
+            item="collections"
           />
         )}
       </Grid>

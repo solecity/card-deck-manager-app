@@ -5,6 +5,9 @@ export default makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     paddingBottom: "2rem"
   },
+  loading: {
+    marginTop: "2rem"
+  },
   table: {
     marginTop: "4rem"
   }
