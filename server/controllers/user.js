@@ -74,7 +74,7 @@ export const createUser = async (req, res) => {
       .status(httpStatus.CREATED)
       .json({ user: newUser, message: USER.CREATED });
   } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).json(error);
+    return res.status(httpStatus.BAD_REQUEST).json({ message: error.message });
   }
 };
 

@@ -76,6 +76,14 @@ export const createCollection = async (req, res) => {
 
     if (!data.user) {
       data.user = loggedUser._id;
+    } else {
+      if (loggedUser.type !== USER_TYPES.ADMIN) {
+        if (loggedUser.id !== data.user) {
+          return res
+            .status(httpStatus.FORBIDDEN)
+            .json({ message: GENERAL.UNAUTHORIZED });
+        }
+      }
     }
 
     if (!isValidObjectId(data.user)) {
