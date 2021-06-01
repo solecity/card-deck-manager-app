@@ -84,7 +84,7 @@ const Form = () => {
     await validateForm();
 
     const res = await createUser(data);
-    console.log(res.status);
+
     if (res.status) {
       setErrorUsername("Username already exists");
     } else {
@@ -101,7 +101,6 @@ const Form = () => {
         Register
       </Typography>
       <form noValidate onSubmit={handleSubmit} className={classes.form}>
-        {console.log(errorUsername)}
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
