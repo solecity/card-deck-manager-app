@@ -30,7 +30,7 @@ const Cards = ({
     <Grid container justify="space-between" className={classes.root}>
       <Grid item xs={6} className={classes.box}>
         <Typography variant="h6" className={classes.subtitle}>
-          {fromAdmin ? `${user.username}'s` : "My"} Cards
+          {fromAdmin ? `${user}'s` : "My"} Cards
         </Typography>
         {remainingCards.map((card) => (
           <ListItem key={card._id} card={card} add addCard={addCard} />

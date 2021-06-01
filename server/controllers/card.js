@@ -76,13 +76,13 @@ export const createCard = async (req, res) => {
 
     if (!data.user) {
       data.user = loggedUser._id;
-    }
-
-    if (loggedUser.type !== USER_TYPES.ADMIN) {
-      if (loggedUser.id !== data.user) {
-        return res
-          .status(httpStatus.FORBIDDEN)
-          .json({ message: GENERAL.UNAUTHORIZED });
+    } else {
+      if (loggedUser.type !== USER_TYPES.ADMIN) {
+        if (loggedUser.id !== data.user) {
+          return res
+            .status(httpStatus.FORBIDDEN)
+            .json({ message: GENERAL.UNAUTHORIZED });
+        }
       }
     }
 

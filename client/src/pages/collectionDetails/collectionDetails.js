@@ -33,6 +33,7 @@ const CollectionDetails = () => {
     user: "",
     name: ""
   });
+  const [collectionUsername, setCollectionUsername] = useState([]);
   const [collectionCards, setCollectionCards] = useState([]);
   const [remainingCards, setRemainingCards] = useState([]);
 
@@ -45,10 +46,10 @@ const CollectionDetails = () => {
       const allCards = await getUserCards(collection.user._id);
 
       setCollectionInfo({
-        userId: collection.user._id,
-        user: collection.user,
+        user: collection.user._id,
         name: collection.name
       });
+      setCollectionUsername(collection.user.username);
       setCollectionCards(collection.cards);
 
       if (allCards) {
@@ -103,7 +104,7 @@ const CollectionDetails = () => {
       ) : (
         <Cards
           title={collectionInfo.name}
-          user={collectionInfo.user}
+          user={collectionUsername}
           collectionCards={collectionCards}
           remainingCards={remainingCards}
           addCard={addCard}

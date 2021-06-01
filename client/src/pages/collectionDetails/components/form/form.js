@@ -108,7 +108,7 @@ const Form = ({ id, data, setData }) => {
                 fullWidth
                 variant="outlined"
                 input={<SelectInput />}
-                value={data.user._id || ""}
+                value={data.user || ""}
                 onChange={handleChange("user")}
               >
                 <MenuItem value={0} disabled>
