@@ -84,6 +84,12 @@ export const updateUser = async (req, res) => {
     const { username, name, password, type } = req.body;
     const loggedUser = req.user;
 
+    if (loggedUser.type !== USER_TYPES.ADMIN && loggedUser.id !== _id) {
+      return res
+        .status(httpStatus.FORBIDDEN)
+        .json({ message: USER.FORBIDDEN_UPDATE });
+    }
+
     const user = await User.findById(_id);
 
     if (!user) {

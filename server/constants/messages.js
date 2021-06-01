@@ -14,6 +14,7 @@ export const USER = {
   UPDATED: "User updated successfully",
   NOT_FOUND: "User not found",
   CONFLIT_USERNAME: "Username is already taken",
+  FORBIDDEN_UPDATE: "You cannot edit another user",
   FORBIDDEN_DELETE: "You cannot delete yourself",
   FORBIDDEN_TYPE: "You cannot change your own type"
 };
