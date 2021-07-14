@@ -9,8 +9,8 @@
     "nodemon": "^2.0.7"
   },
   "scripts": {
-    "start": "node index.js",
-    "server": "nodemon index.js",
+    "start": "cd server && node index.js",
+    "server": "cd server && nodemon index.js",
     "client": "cd client && npm run start",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
 
