@@ -4,8 +4,12 @@
   "description": "Project done in React for practice",
   "main": "index.js",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
+    "date-fns": "^2.22.1",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
     "mongoose": "^5.13.2"
   },
   "devDependencies": {
