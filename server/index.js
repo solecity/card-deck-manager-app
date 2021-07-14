@@ -23,7 +23,7 @@ app.use("/users", routes.user);
 app.use("/cards", routes.card);
 app.use("/collections", routes.collection);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 
 // connect database
 mongoose
