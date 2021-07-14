@@ -10,7 +10,10 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "http-status-codes": "^2.1.4",
-    "mongoose": "^5.13.2"
+    "joi": "^17.4.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.2",
+    "require-directory": "^2.1.1"
   },
   "devDependencies": {
     "concurrently": "^6.2.0",
