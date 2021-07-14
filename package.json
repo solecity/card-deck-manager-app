@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Project done in React for practice",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.17.1"
+  },
   "devDependencies": {
     "concurrently": "^6.2.0",
     "nodemon": "^2.0.7"
@@ -13,7 +15,6 @@
     "server": "cd server && nodemon index.js",
     "client": "cd client && npm run start",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
-
   },
   "repository": {
     "type": "git",
